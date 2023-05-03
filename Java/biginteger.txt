@@ -1,0 +1,38 @@
+import java.util.*;
+import java.math.BigInteger;
+class GFG {
+	public static void main (String[] args)
+	{
+		Scanner sc=new Scanner(System.in);
+		int t=sc.nextInt();
+		int n;
+		String s="1298074214633706835075030044377087";
+		while(t-->0)
+		{
+		    n=sc.nextInt();
+		    BigInteger f1=new BigInteger("2");
+		    BigInteger f2=new BigInteger(s);
+		    f1=(f1.pow(n+1)).subtract(BigInteger.valueOf(1));
+		    System.out.println(f1.mod(f2));
+		}
+	}
+}
+
+
+
+//decreased number of lines:
+
+import java.util.*;
+import java.math.BigInteger;
+class GFG {
+	public static void main (String[] args)
+	{
+		Scanner sc=new Scanner(System.in);
+		int t=sc.nextInt();
+		int n;
+		while(t-->0)
+		{n=sc.nextInt();
+		 BigInteger f1=new BigInteger("2");
+		 BigInteger f2=new BigInteger("1298074214633706835075030044377087");
+		 System.out.println((f1.pow(n+1)).subtract(BigInteger.valueOf(1)).mod(f2));
+		}}}

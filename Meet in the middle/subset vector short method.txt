@@ -1,0 +1,100 @@
+// Problem: C. Vanya and Scales
+// Contest: Codeforces - Codeforces Round #308 (Div. 2)
+// URL: https://codeforces.com/contest/552/problem/C
+// Memory Limit: 256 MB
+// Time Limit: 1000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+    	ll w;
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>w>>m;
+        
+        
+        // 2^k or 3^k will give tle:)
+        
+        
+        // induction proof for m+L==R at w=3
+        
+        if(w==2 or w==3)
+        {
+        	yes;
+        	exit(0);
+        }
+        
+        
+        v.pb(1);
+        while(v.back()<m)
+        {
+        	v.pb(v.back()*w);
+        }
+        
+        // creating subsets:)
+        unordered_set<ll>st,nst;
+        st.insert(0);
+        
+        for(auto i:v) // w^k ->k=v.size()-1;
+        {
+        	for(auto it:st)
+        	{
+        		nst.insert(it+i);
+        		nst.insert(it);
+        	}
+        	swap(nst,st);
+        }
+        
+        
+        // meet in the middle:)
+        for(auto it:st)
+        {
+        	if(st.count(it+m)) // if x is present on both sides, it will be cancelled
+        	{
+        		yes;
+        		exit(0);
+        	}
+        }
+        
+        no;
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

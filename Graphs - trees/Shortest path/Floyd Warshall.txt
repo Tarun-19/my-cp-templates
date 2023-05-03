@@ -1,0 +1,129 @@
+// Problem: B. String Problem
+// Contest: Codeforces - Codeforces Beta Round #33 (Codeforces format)
+// URL: https://codeforces.com/problemset/problem/33/B
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9;bool debug=false;
+
+int main()
+{FAST;ll tt=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s,t;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>tt;while(tt--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>s>>t;
+        
+        
+        
+        ll dp[200][200];
+        
+        f0(i,200)
+        {
+        	f0(j,200)
+        	{
+        		dp[i][j]=mod;
+        		
+        		if(i==j)
+        		dp[i][j]=0;
+        	}
+        }
+        
+        
+        cin>>q;
+        while(q--)
+        {
+        	char c1,c2;
+        	cin>>c1>>c2>>x;
+        	
+        	dp[c1][c2]=min(dp[c1][c2],x);
+        }
+        
+        if(s.size()!=t.size())
+        {
+        	cout<<-1;
+        	exit(0);
+        }
+        
+        
+        f0(k,200)
+        {
+        	f0(i,200)
+        	{
+        		f0(j,200)
+        		{
+        			if(dp[i][k]<mod and dp[k][j]<mod)
+        			{
+        				dp[i][j]=min(dp[i][j], dp[i][k]+dp[k][j]);
+        			}
+        		}
+        	}
+        }
+        
+        // cout<<dp['d']['c']<<ln;
+        
+        f0(i,s.size())
+        {
+        	if(s[i]==t[i])
+        	continue;
+        	
+        	pr={mod,'1'};
+        	
+        	fab(ch,'a','z')
+        	{
+        		tmp=dp[s[i]][ch]+dp[t[i]][ch];
+        		
+        		pr=min(pr,{tmp,ch});
+        	}
+        	
+        	if(pr.ff>=mod)
+        	{
+        		cout<<-1;
+        		exit(0);
+        	}
+        	// continue;
+        	
+        	// cout<<"i->"<<i<<" "<<pr.ff<<" "<<pr.ss<<ln;
+        	
+        	ans+=pr.ff;
+        	s[i]=pr.ss;
+        }
+        
+        cout<<ans<<ln<<s;
+    }
+	return 0;
+}
+// It's gonna be legendary!!
+// Wait for it ~Barney

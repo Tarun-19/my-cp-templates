@@ -1,0 +1,175 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    " A code is like love,
+        it has created with clear intentions at the beginning,
+            but it can get complicated:) "
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>
+#define pb emplace_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)printf("%d ",dsp);}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+
+ll a[300010];
+ll tree_gcd[4*300010];
+
+void build(ll si,ll ss,ll se)//index,start,end
+{
+    if(ss==se)
+    {
+        tree_gcd[si]=a[ss];
+        return;
+    }
+    
+    ll md=(ss+se)>>1;
+    ll p=si;
+    si=si<<1;
+    
+    
+    build(si,ss,md);
+    build(si+1,md+1,se);
+    
+    tree_gcd[p]=__gcd(tree_gcd[si],tree_gcd[si+1]);
+}
+
+
+ll query_gcd(ll si,ll ss,ll se,ll qs,ll qe)
+{
+    if(ss>qe||se<qs)
+    return 0;
+    
+    if(ss>=qs&&se<=qe)
+    return tree_gcd[si];
+    
+    ll md=ss+se;
+    md=md>>1;
+    
+    si=si<<1;
+    
+    return __gcd(query_gcd(si,ss,md,qs,qe),query_gcd(si+1,md+1,se,qs,qe));
+}
+
+vll adj[1000001];
+
+bool awesome(ll md,ll n)// segment size
+{
+	ll i,j,k,p,q,r,s,t,l,x,y,z,pos;
+	
+	f1(i,n-md+1)
+	{
+		l=i;
+		r=i+md-1;
+		
+		// x=query(1,1,n,l,r);
+		y=query_gcd(1,1,n,l,r);
+		
+		pos=lower_bound(all(adj[y]), l)-adj[y].begin();
+		if(pos>=adj[y].size())
+		continue;
+		
+		x=adj[y][pos];
+		if(x<l or x>r) continue;
+		
+		x=a[x];
+		
+		if(x==y) return true;
+		// cout<<md<<" "<<l<<","<<r<<" "<<x<<","<<y<<ln;
+	}
+	return false;
+}
+vll v;
+
+
+int main()
+{//FAST;
+ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    // string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--)
+    {
+        // f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        // cin>>n;
+        scanf("%d",&n);
+        f1(i,n)
+        {
+        	scanf("%d",&a[i]);//cin>>a[i];
+        	adj[a[i]].pb(i);
+        }
+        
+        build(1,1,n);
+        // build_gcd(1,1,n);
+        
+        ll low,high,md;
+        low=0;
+        high=n-1;
+        
+        ans=0;
+        while(low<=high)
+        {
+        	md=(low+high);
+        	md=md>>1;
+        	
+        	if(awesome(md+1,n))
+        	{
+        		low=md+1;
+        		ans=max(ans,md);
+        	}
+        	else
+        	{
+        		high=md-1;
+        	}
+        	
+        	// cnt++;
+        	// assert(cnt<30);
+        }
+        
+        md=ans+1;
+        // generate v
+        f1(i,n-md+1)
+		{
+			l=i;
+			r=i+md-1;
+			
+			// x=query(1,1,n,l,r);
+			y=query_gcd(1,1,n,l,r);
+			pos=lower_bound(all(adj[y]), l)-adj[y].begin();
+			if(pos>=adj[y].size())
+			continue;
+			
+			x=adj[y][pos];
+			if(x<l or x>r) continue;
+			
+			x=a[x];
+			
+			if(x==y) v.pb(i);
+		}
+        
+        printf("%d %d\n",v.size(),ans);
+        display(v);
+        
+    }
+	return 0;
+}
+// Either be on top or leave this crap..(╥﹏╥)

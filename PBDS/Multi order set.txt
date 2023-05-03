@@ -1,0 +1,20 @@
+
+
+You need to change the comparison function from less to less_equal asn in the following:
+
+typedef tree<
+    int,
+    null_type,
+    less_equal<int>,
+    rb_tree_tag,
+    tree_order_statistics_node_update> ordered_set;
+
+
+
+// method of pairs is also availabe:)
+https://stackoverflow.com/questions/44238144/order-statistics-tree-using-gnu-pbds-for-multiset
+
+
+// Maunal conversion to multi-orderedset is lengthy
+// https://codeforces.com/contest/459/submission/98767003
+

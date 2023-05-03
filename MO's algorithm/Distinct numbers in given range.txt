@@ -1,0 +1,174 @@
+// Problem: D-query
+// Contest: SPOJ - Classical
+// URL: https://www.spoj.com/problems/DQUERY/
+// Memory Limit: 1536 MB
+// Time Limit: 1500 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+const ll block=555;
+
+struct query
+{
+	ll l,r,pos;
+};
+
+
+query Q[200001];
+ll sol[200001];
+ll cur=0;// update for each testcase:)
+
+ll a[30001];
+ll freq[1000001];
+
+bool comparator(query x, query y)
+{
+	if((x.l/block)==(y.l/block))
+	{
+		return x.r<y.r;
+	}
+	else
+	{
+		return x.l/block<y.l/block;
+	}
+	// false if equal:)
+}
+
+
+
+void add(ll pos)
+{
+	// operation
+	freq[a[pos]]++;
+	
+	if(freq[a[pos]]==1)
+	cur++;
+}
+
+
+void remove(ll pos)
+{
+	// operation
+	freq[a[pos]]--;
+	
+	if(freq[a[pos]]==0)
+	cur--;
+}
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        // check constraints and block size
+        cur=0;///
+        
+        // reset();
+        
+        cin>>n;
+        f0(i,n)
+        {
+            cin>>tmp;
+            a[i]=tmp;
+            // mappu[tmp]++;
+        }
+        
+        
+        cin>>q;
+        f0(i,q)
+        {
+        	cin>>Q[i].l>>Q[i].r;
+        	Q[i].pos=i;
+        	
+        	// 0-based
+        	Q[i].l--;
+        	Q[i].r--;
+        }
+        
+        sort(Q,Q+q, comparator);
+        
+        
+        ll ml=0;// MO's left
+        ll mr=-1;// MO's right
+        
+        f0(i,q)
+        {
+        	
+        	while(ml>Q[i].l)
+        	{
+        		ml--;
+        		add(ml);
+        	}
+        	
+        	while(mr<Q[i].r)
+        	{
+        		mr++;
+        		add(mr);
+        	}
+        	
+        	
+        	while(ml<Q[i].l)
+        	{
+        		remove(ml);
+        		ml++;
+        	}
+        	
+        	while(mr>Q[i].r)
+        	{
+        		remove(mr);
+        		mr--;
+        	}
+        	
+        	
+        	sol[Q[i].pos]=cur;
+        	
+        }
+        
+        
+        f0(i,q)
+        {
+        	cout<<sol[i]<<ln;
+        }
+        
+        cout<<ln;
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// Bacha, kabil bano kabil
+// Kaamyabi jhak maarke peeche ayegi ~Phunsukh Wangdu

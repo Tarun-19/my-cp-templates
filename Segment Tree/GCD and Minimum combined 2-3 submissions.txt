@@ -1,0 +1,4 @@
+https://codeforces.com/contest/359/problem/D
+
+//tle but perfect
+https://codeforces.com/contest/359/submission/115895213

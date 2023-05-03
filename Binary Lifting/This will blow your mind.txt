@@ -1,0 +1,5 @@
+https://www.codechef.com/START24B/problems/SPECIALSTR
+
+-> check both bruteforce and editorial
+-> logic is same, implementation is orz
+

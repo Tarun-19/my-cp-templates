@@ -1,0 +1,119 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    " A code is like love,
+        it has created with clear intentions at the beginning,
+            but it can get complicated:) "
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define test ll t;cin>>t;while(t--)
+#define ll long long int
+#define vll vector<ll>
+#define ff first
+#define ss second
+#define pb push_back
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+int main()
+{FAST;ll n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    // test
+    {
+        ll tot,mod;
+        f=0;flag=0;ans=0;cnt=0;sum=0;mn=LLONG_MAX;mx=LLONG_MIN;string s;
+        cin>>tot>>mod;
+        
+        n=tot/2;
+        ll n2=tot-n;
+        
+        ll a[n];
+        f0(i,n)
+        cin>>a[i];
+        
+        ll b[n2];
+        f0(i,n2)
+        cin>>b[i];
+        
+        // display(a);display(b);
+        l=r=0;
+        
+        vll v;// values for subsequences on left side:)
+        f0(i,(1<<(n)))
+        {
+            sum=0;
+            if(!i) continue;
+            f0(j,n)
+            {
+                if(i&(1<<j))
+                {
+                    // cout<<a[j]<<" ";
+                    sum+=a[j]%mod;
+                }
+            }
+            // cout<<ln;
+            l=max(l,sum%mod);
+            v.pb(sum%mod);
+        }
+        
+        vll v2;// values for subsequences on right side:)
+        f0(i,(1<<(n2)))
+        {
+            sum=0;
+            if(!i) continue;
+            f0(j,n2)
+            {
+                if(i&(1<<j))
+                {
+                    // cout<<b[j]<<" ";
+                    sum+=b[j]%mod;
+                }
+            }
+            // cout<<ln;
+            r=max(r,sum%mod);
+            v2.pb(sum%mod);
+        }
+        
+        ans=max(l,r);
+        ans=max(ans,(l+r)%mod);
+        // cout<<"Result:"<<ln;
+        
+        sort(v.begin(),v.end());
+        sort(v2.begin(),v2.end());
+        
+        // display(v);
+        // display(v2);
+        
+        for(auto it:v)
+        {
+            ll low=0,high=v2.size()-1;
+            
+            x=mod-it;
+            ll sol=-1;
+            while(low<=high)
+            {
+                ll md=(low+high)/2;
+                
+                if(v2[md]>=x) high=md-1;// striclty smaller:)
+                else
+                {
+                    sol=md;
+                    low=md+1;
+                }
+            }
+            
+            if(sol==-1) continue;
+            ans=max(ans,(v2[sol]+it)%mod);
+        }
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// https://codeforces.com/contest/888/problem/E
+// all subsequences in 2^(n/2)+binary search

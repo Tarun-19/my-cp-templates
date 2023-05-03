@@ -1,0 +1,44 @@
+import java.util.*;
+import java.math.BigInteger;
+import java.lang.Math;
+
+public class Tarun_19
+{
+	public static void main (String[] args)
+	{
+		Scanner sc=new Scanner(System.in);
+		long t,n,x,y,z,l,r,p,q,f,flag,ans,k,m,tmp;
+		String s;
+		int i,j;// for array index
+		t=1;
+		t=sc.nextLong();//
+		while(t-->0)
+		{
+		    f=0;flag=0;ans=0;
+		    n=sc.nextLong();
+		    
+		    int N=(int)n;
+		    long a[]=new long[N];
+		    for(i=0;i<N;i++)
+		    {
+		        tmp=sc.nextLong();
+		        a[i]=tmp;
+		    }
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    System.out.println(ans);
+		}
+	}
+}

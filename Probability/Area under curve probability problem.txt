@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+#define test ll t;cin>>t;while(t--)
+#define ll long long int
+#define ld long double
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+using namespace std;
+int main()
+{
+	ll n,x,y,z,l,r,i,j,k,m,c,cnt;
+    test
+    {
+        ld a,b;
+        cin>>a>>b;
+        // range probability with area under curve:)
+        
+        ld ht=a*.25;
+        ld tr=.5*a*ht;
+        if(ht>b)
+        {
+        	ld df=abs(ht-b);
+        	ld rem=.5*df*(a-4*b);
+        	tr-=rem;
+        }
+        
+        tr+=a*b;
+        ld rec=b*a*2.0;
+        ld sol=tr/rec;
+        if(!b) sol=1;
+        else if(!a) sol=.5;
+        
+        cout<<fixed<<setprecision(10)<<sol<<endl;
+    }
+	return 0;
+}

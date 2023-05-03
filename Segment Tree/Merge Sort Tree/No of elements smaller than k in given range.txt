@@ -1,0 +1,136 @@
+// no. of elements in [l,r] strictly < k
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+const ll MXM=2e5+77;
+
+vll tree[MXM<<2];
+ll a[MXM];
+
+void build(ll si,ll ss,ll se)
+{
+	if(ss==se)
+	{
+		tree[si].pb(a[se]);
+		return;
+	}
+	
+	ll md,l=0,r=0;
+	
+	md=(ss+se)>>1;
+	
+	build(si<<1,ss,md);
+	build(si<<1|1,md+1,se);
+	
+	
+	while(l<tree[si<<1].size() and r<tree[si<<1|1].size())
+	{
+		if(tree[si<<1][l]<=tree[si<<1|1][r])
+		{
+			tree[si].pb(tree[si<<1][l++]);
+			continue;
+		}
+		tree[si].pb(tree[si<<1|1][r++]);
+	}
+	
+	while(l<tree[si<<1].size())
+	{
+		tree[si].pb(tree[si<<1][l++]);
+	}
+	while(r<tree[si<<1|1].size())
+	{
+		tree[si].pb(tree[si<<1|1][r++]);
+	}
+	
+}
+
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe,ll k)
+{
+	if(ss>qe or se<qs)
+	{
+		return 0;
+	}
+	
+	ll md,x;
+	
+	if(ss>=qs and se<=qe)
+	{
+		x=upper_bound(all(tree[si]),k-1)-tree[si].begin();
+		
+		return x;
+	}
+	
+	
+	md=(ss+se)>>1;
+	
+	x=query(si<<1,ss,md,qs,qe,k);
+	x+=query(si<<1|1,md+1,se,qs,qe,k);
+	return x;
+}
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        cin>>n>>q;
+        
+        f1(i,n)
+        {
+            cin>>tmp;
+            a[i]=tmp;
+            // mappu[tmp]++;
+        }
+        
+        // dealing with int
+        // check MXM
+        
+        
+        build(1,1,n);
+        
+        while(q--)
+        {
+        	cin>>l>>r>>k;
+        	
+        	ans=query(1,1,n,l,r,k);
+        	
+        	cout<<ans<<ln;
+        }
+        
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

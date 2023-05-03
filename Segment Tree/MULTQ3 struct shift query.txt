@@ -1,0 +1,174 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    Don't stop until you feel proud.(P.S. don't feel proud;)
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+
+
+struct node
+{
+    ll a[3];
+};
+
+node tree[400009];
+ll lazy[400009];
+
+
+void build(ll si,ll ss,ll se)
+{
+    if(ss==se)
+    {
+        tree[si].a[0]=1;
+        tree[si].a[1]=0;
+        tree[si].a[2]=0;
+        return;
+    }
+    ll md=(ss+se)/2;
+    
+    build(2*si,ss,md);
+    build(2*si+1,md+1,se);
+    
+    tree[si].a[0]=tree[2*si].a[0]+tree[2*si+1].a[0];
+    tree[si].a[1]=tree[2*si].a[1]+tree[2*si+1].a[1];
+    tree[si].a[2]=tree[2*si].a[2]+tree[2*si+1].a[2];
+}
+
+
+void shift(ll si)
+{
+    ll tmp=tree[si].a[2];
+    tree[si].a[2]=tree[si].a[1];
+    tree[si].a[1]=tree[si].a[0];
+    tree[si].a[0]=tmp;
+}
+
+void update(ll si,ll ss,ll se,ll qs,ll qe)
+{
+    if(lazy[si]!=0)
+    {
+        ll tmp=lazy[si];
+        lazy[si]=0;
+        
+        if(ss!=se)
+        {
+            lazy[2*si]+=tmp;
+            lazy[2*si+1]+=tmp;
+        }
+        tmp%=3;
+        
+        ll i;
+        f0(i,tmp) shift(si);
+    }
+    if(ss>qe||se<qs) return;
+    
+    if(qs<=ss&&qe>=se)
+    {
+        shift(si);// bcz only 1 is added:)
+        if(ss!=se)
+        {
+            lazy[2*si]+=1;
+            lazy[2*si+1]+=1;
+        }
+        return;
+    }
+    
+    ll md=(ss+se)/2;
+    update(2*si,ss,md,qs,qe);
+    update(2*si+1,md+1,se,qs,qe);
+    
+    tree[si].a[0]=tree[2*si].a[0]+tree[2*si+1].a[0];
+    tree[si].a[1]=tree[2*si].a[1]+tree[2*si+1].a[1];
+    tree[si].a[2]=tree[2*si].a[2]+tree[2*si+1].a[2];
+}
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe)
+{
+    if(lazy[si]!=0)
+    {
+        ll tmp=lazy[si];
+        lazy[si]=0;
+        
+        if(ss!=se)
+        {
+            lazy[2*si]+=tmp;
+            lazy[2*si+1]+=tmp;
+        }
+        tmp%=3;
+        
+        ll i;
+        f0(i,tmp) shift(si);
+    }
+    
+    if(ss>qe||se<qs) return 0;
+    
+    if(qs<=ss&&qe>=se) return tree[si].a[0];
+    
+    ll md=(ss+se)/2;
+    
+    ll l=query(2*si,ss,md,qs,qe);
+    ll r=query(2*si+1,md+1,se,qs,qe);
+    
+    return l+r;
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        memo(tree,0);//
+        memo(lazy,0);
+        
+        cin>>n>>q;
+        
+        build(1,1,n);// no need in this case:)
+        
+        while(q--)
+        {
+            cin>>z;
+            
+            if(z==0)
+            {
+                cin>>l>>r;
+                l++;r++;
+                update(1,1,n,l,r);
+            }
+            else
+            {
+                cin>>l>>r;
+                l++;r++;
+                ans=query(1,1,n,l,r);
+                cout<<ans<<ln;
+            }
+        }
+    }
+	return 0;
+}

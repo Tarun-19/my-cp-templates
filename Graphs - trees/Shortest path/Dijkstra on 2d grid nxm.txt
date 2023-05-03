@@ -1,0 +1,3 @@
+map<pair<ll,ll>,ll> val;
+
+// hash (x,y) and use normal code

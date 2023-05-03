@@ -1,0 +1,188 @@
+// Problem: C. Book
+// Contest: Codeforces - Codeforces Round #743 (Div. 2)
+// URL: https://codeforces.com/contest/1573/problem/C
+// Memory Limit: 256 MB
+// Time Limit: 1500 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb emplace_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+vll adj[200101];
+ll vis[200101];
+ll in[200101];
+ll dp[200101];
+
+vll topo;
+
+void toposort(ll n) // + perfect cycle detection
+{
+	// vis[n]=1;
+	queue<ll>q;
+	q.push(0);
+	ll x;
+	
+	while(q.size())
+	{
+		x=q.front();
+		q.pop();
+		
+		topo.pb(x);
+		for(auto it:adj[x])
+		{
+			in[it]--;
+			if(in[it]==0) q.push(it);
+		}
+	}
+}
+
+ll sol=1;
+
+// Gives WA
+//1->2->3 1->3 will give WA
+
+// void dfs(ll n)
+// {
+	// vis[n]=1;
+	// for(auto it:adj[n])
+	// {
+		// ll x;
+		// x=(n>it)?1:0;
+// 		
+		// dp[it]=max(dp[it],dp[n]+x);
+		// sol=max(sol,dp[it]);
+	// }
+// 	
+	// for(auto it:adj[n])
+	// {
+		// if(!vis[it])
+		// dfs(it);
+	// }
+// }
+
+
+// Bottom up
+void dfs(ll n)
+{
+	vis[n]=1;
+	for(auto it:adj[n])
+	{
+		if(!vis[it])
+		dfs(it);
+	}
+	
+	for(auto it:adj[n])
+	{
+		ll x;
+		x=(n>it)?1:0;
+		
+		dp[n]=max(dp[n],dp[it]+x);
+		sol=max(sol,dp[n]);
+	}
+	
+}
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    
+    cin>>t;
+    ll iti=t;
+    
+    while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        sol=1;
+        
+        f0(i,n+2)
+        {
+        	vis[i]=0;
+        	adj[i].clear();
+        	in[i]=0;
+        	dp[i]=1;
+        }
+        topo.clear();
+        
+        
+        f0(i,n)
+        {
+            cin>>tmp;
+            f0(j,tmp)
+            {
+            	cin>>x;
+            	adj[x].pb(i+1);
+            	in[i+1]++;
+            }
+        }
+        
+        
+        f1(i,n)
+        {
+        	if(in[i]==0)
+        	{
+        		adj[0].pb(i);
+        		in[i]++;
+        	}
+        }
+        
+        toposort(0);
+        // reverse(all(topo)); /////
+        
+        dp[0]=0; // rest=1
+        
+        
+        // f0(i,n+2) vis[i]=0;
+        
+        // display(topo);
+        
+        if(topo.size()!=n+1)
+        {
+        	cout<<"-1"<<ln;
+        	continue;
+        }
+        
+        dfs(0);
+        
+        // hi;
+        // f0(i,n+2) cout<<dp[i]<<" ";
+        // hi;
+        
+        // ans=dp[max_element(dp,dp+n+2)-dp];
+        ans=sol;
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

@@ -1,0 +1,37 @@
+// while method=>
+
+l=1;r=1e9;
+while(l<=r)
+{
+    ll md=(l+r)/2;
+    
+    f=0;
+    f0(j,n) f+=a[j]/md;
+    
+    if(f>=k)
+    {
+	ans=md;
+        l=md+1;
+    }
+    else
+    {
+	r=md-1;
+    }
+}
+
+///////////////////////////////////////////
+
+for loop method
+
+	l=1;r=1e9;
+        f0(i,65)
+        {
+            ll md=(l+r)/2;
+            
+            f=0;
+            f0(j,n) f+=a[j]/md;
+            
+            if(f>=k) l=md;
+            else r=md;
+        }
+        ans=(l+r)/2;

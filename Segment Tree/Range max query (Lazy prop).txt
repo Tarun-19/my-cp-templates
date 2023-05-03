@@ -1,0 +1,129 @@
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll N=200050;
+ll a[N];
+ll st[4*N],lazy[4*N];
+
+void build(ll si,ll ss,ll se)
+{
+    if(ss==se)
+    {
+        st[si]=a[ss];
+        return;
+    }
+    
+    ll md=(ss+se)/2;
+    build(2*si,ss,md);
+    build(2*si+1,md+1,se);
+    
+    st[si]=max(st[2*si],st[2*si+1]);
+}
+
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe)
+{
+    if(lazy[si]!=0)
+    {
+        ll tmp=lazy[si];
+        lazy[si]=0;
+        
+        st[si]+=tmp;
+        
+        if(ss!=se)
+        lazy[2*si]+=tmp,lazy[2*si+1]+=tmp;
+    }
+    
+    if(qe<ss||qs>se) return -100000000000;
+    if(qe>=se&&qs<=ss) return st[si];
+    
+    ll md=(ss+se)/2;
+    
+    ll l=query(2*si,ss,md,qs,qe);
+    ll r=query(2*si+1,md+1,se,qs,qe);
+    return max(l,r);
+}
+
+
+void update(ll si,ll ss,ll se,ll qs,ll qe,ll val)
+{
+    if(lazy[si]!=0)
+    {
+        ll tmp=lazy[si];
+        lazy[si]=0;
+        st[si]+=tmp;
+        
+        if(ss!=se)
+        lazy[2*si]+=tmp,lazy[2*si+1]+=tmp;
+    }
+    
+    if(qe<ss||qs>se) return;
+    if(qe>=se&&qs<=ss)
+    {
+        ll tmp=val;
+        st[si]+=tmp;
+        
+        if(ss!=se)
+        lazy[2*si]+=val,lazy[2*si+1]+=val;
+        return;
+    }
+    
+    
+    ll md=(ss+se)/2;
+    
+    update(2*si,ss,md,qs,qe,val);
+    update(2*si+1,md+1,se,qs,qe,val);
+    
+    st[si]=max(st[2*si],st[2*si+1]);
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--) // horrible
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>q;
+        memo(st,0);
+        memo(lazy,0);
+        
+        f1(i,n) cin>>a[i];
+        build(1,1,n);
+        
+        while(q--)
+        {
+        	cin>>l>>r;
+        	cout<<query(1,1,n,l,r)<<ln;
+        }
+        
+    }
+	return 0;
+}
+
+// Either be on top or leave this crap..(╥﹏╥)

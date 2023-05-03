@@ -1,0 +1,13 @@
+vec.pb({l,r}); // here l>r is also possible
+
+
+
+st.insert(x/y); //WA... may give precision error
+st.insert({x,y});/ AC
+
+st.insert(x*y); // WA if there is overflow
+st.insert({min(x,y)  , max(x,y)}) ..AC:)
+
+
+never use <= in comparator (1213G)
+

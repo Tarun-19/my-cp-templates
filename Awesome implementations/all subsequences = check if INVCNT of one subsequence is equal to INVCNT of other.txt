@@ -1,0 +1,157 @@
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll int
+#define f0(i,n) for(i=0;i<n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define display(x) for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";
+#define hi cout<<"hi\n";
+#define ln "\n"
+using namespace std;
+
+ll cnt;
+  vector<vector<int>> uni;
+// Recursive function to print all 
+// possible subsequences for given array 
+void printSubsequences(vector<int> arr, int index,  
+                       vector<int> subarr) 
+{ 
+    if (index == arr.size()) 
+    { 
+        int l = subarr.size(); 
+  
+        if (l != 0) 
+        uni.push_back(subarr);
+        // return subarr;
+            // printArray(subarr, l); 
+    } 
+    else
+    { 
+        printSubsequences(arr, index + 1, subarr); 
+        subarr.push_back(arr[index]); 
+        printSubsequences(arr, index + 1, subarr); 
+    }
+    return ;
+} 
+  
+
+
+
+
+
+
+void merge(ll a[],ll l,ll md,ll r)
+{
+    ll tmp[r-l+1];
+    
+    ll i=l,j=md+1,k=0;
+    
+    while(i<=md&&j<=r)
+    {
+        if(a[i]<=a[j])
+        {
+            tmp[k++]=a[i];
+            i++;
+        }
+        else
+        {
+            tmp[k++]=a[j];
+            j++;
+            cnt+=(md-i+1);
+        }
+    }
+    
+    
+    while(i<=md)
+    {
+        tmp[k++]=a[i];
+        i++;
+    }
+    while(j<=r)
+    {
+        tmp[k++]=a[j];
+        j++;
+    }
+    
+    fab(i,l,r)
+    a[i]=tmp[i-l];
+}
+
+
+void merge_sort(ll a[],ll l,ll r)
+{
+    if(l<r)
+    {
+        ll md=(l+r)/2;
+        
+        merge_sort(a,l,md);
+        merge_sort(a,md+1,r);
+        
+        merge(a,l,md,r);
+    }
+}
+
+int main()
+{
+    FAST;
+    ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,sum,ans,tmp,it,pos,avg,m;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        ll a[n];flag=0;
+        fab(i,0,n-1)
+        cin>>a[i];
+        
+        ans=0;
+        // cnt=0;
+        // merge_sort(a,0,n-1);
+        // cout<<cnt<<ln;
+        
+        
+        vector<int> arr;
+        fab(i,0,n-1)
+        arr.push_back(i);
+        
+        
+        vector<int> b; 
+        
+        vector<int>vv;
+        printSubsequences(arr, 0, b);
+        
+        for (i = 0; i <uni.size(); i++)
+        {
+            x=uni[i].size();y=n-x;
+            ll l[x],r[y];
+            p=0;q=0;
+            // for(auto it:uni[i])
+            f0(j,n)
+            {
+                if(find(uni[i].begin(),uni[i].end(),a[j])!=uni[i].end())
+                l[p++]=a[j];
+                else
+                r[q++]=a[j];
+            }
+            
+            ll ans1,ans2;
+            cnt=0;
+            merge_sort(l,0,p-1);
+            ans1=cnt;
+            cnt=0;
+            merge_sort(r,0,q-1);
+            ans2=cnt;
+            
+            if(ans1==ans2)
+            {
+                flag=1;break;
+            }
+            
+            // cout<<endl;
+        }
+        if(flag)
+        cout<<"YES"<<endl;
+        else
+        cout<<"NO"<<endl;
+    }
+	return 0;
+}
+

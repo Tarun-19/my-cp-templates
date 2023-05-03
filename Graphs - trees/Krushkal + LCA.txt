@@ -1,0 +1,420 @@
+// Problem: E. Minimum spanning tree for each edge
+// Contest: Codeforces - Educational Codeforces Round 3
+// URL: https://codeforces.com/contest/609/problem/E
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+const ll mxm=2e5+565;
+const ll MX=21;// decrease this
+// 2^17 = 131072
+// 2^18 = 262144
+
+vll adj[mxm];
+ll depth[mxm];
+ll dp[mxm][MX+1];
+ll lookup[mxm][MX+1];
+
+
+map<pair<ll,ll>,ll> weight;
+
+
+void dfs(ll n,ll d,ll p)
+{
+	depth[n]=d;
+	dp[n][0]=p;
+	lookup[n][0]=max(lookup[n][0],weight[{n,p}]); // max till dp[n][0]
+	
+	for(auto it:adj[n])
+	{
+		if(it==p)
+		{
+			continue;
+		}
+		else
+		{
+			dfs(it,1+d,n);
+		}
+	}
+}
+
+
+void precompute(ll n)
+{
+	ll i,j;
+	
+	dfs(1,0,-1);
+	
+	f1(i,MX)
+	{
+		f1(j,n)
+		{
+			if(dp[j][i-1]==-1)
+			{
+				continue;
+			}
+			else
+			{
+				dp[j][i]=dp[dp[j][i-1]][i-1];
+				// lookup[j][i]=lookup[lookup[j][i-1]][i-1]; obviously wrong:)
+				lookup[j][i]=max( lookup[j][i-1], lookup[dp[j][i-1]][i-1]);
+			}
+		}
+	}
+}
+
+
+ll query_lca(ll a,ll b)
+{
+	if(depth[b]<depth[a])
+	{
+		swap(a,b);
+	}
+	
+	ll dif=depth[b]-depth[a];
+	ll tmp,i;
+	
+	while(dif>=1)
+	{
+		tmp=log2(dif);
+		b=dp[b][tmp];
+		dif=dif-(1<<tmp);
+	}
+	
+	if(a==b)
+	{
+		return b;
+	}
+	
+	f0r(i,MX+1)
+	{
+		if(dp[a][i]==-1)
+		{
+			continue;
+		}
+		if(dp[a][i]==dp[b][i])
+		{
+			continue;
+		}
+		
+		a=dp[a][i];
+		b=dp[b][i];
+	}
+	
+	return dp[a][0];
+}
+
+
+ll query_distance(ll a,ll b)
+{
+	ll tmp=query_lca(a,b);
+	a=depth[a]-depth[tmp];
+	b=depth[b]-depth[tmp];
+	
+	tmp=a+b;
+	return tmp;
+}
+
+
+// heaviest edge in path from a to b
+// here a is ancestor of b:)
+ll query_max(ll a,ll b)
+{
+	ll ans=-1e9-10;
+	
+	ll dif=depth[b]-depth[a];
+	ll tmp;
+	
+	// cout<<dif<<ln;
+	
+	while(dif>=1)
+	{
+		tmp=log2(dif);
+		
+		// cout<<tmp;
+		ans=max(ans,lookup[b][tmp]);
+		
+		b=dp[b][tmp];
+		dif=dif-(1<<tmp);
+	}
+	
+	return ans;
+}
+
+// heaviest edge in path from a to b
+// generalised for all
+ll query_max_in_path(ll a,ll b)
+{
+	
+	ll lca=query_lca(a,b);
+	ll ans=-1e9-10;
+	
+	ans=max(ans,query_max(lca,a));
+	
+	ans=max(ans,query_max(lca,b));
+	
+	
+	return ans;
+}
+
+
+//////////////////////
+struct edge
+{
+	ll l,r,wt;
+	ll id;
+};
+//////////
+vector<edge> mst; // mst edges
+ll mstWeight;
+ll N,M;
+set<pair<ll,ll>> inMST;
+/////////////
+
+const ll MXM=mxm;
+
+
+
+ll a[MXM];
+ll par[MXM];
+ll sz[MXM]; //
+
+vector<edge> G;
+
+void reset()
+{
+	ll i;
+	f0(i,MXM)
+	{
+		par[i]=i;
+		sz[i]=1;
+	}
+}
+
+ll find(ll x)
+{
+    if(par[x]==x) return x;
+    par[x]=find(par[x]);
+    return par[x];
+}
+ 
+bool same(ll x,ll y)
+{
+    if(find(x)==find(y)) return true;
+    return false;
+}
+ 
+void unite(ll x,ll y)
+{
+    x=find(x);
+    y=find(y);
+    if(x==y) return;
+    
+    if(sz[x]<sz[y]) swap(x,y);
+    sz[x]+=sz[y];
+    
+    par[y]=x;
+}
+
+bool comparator(edge x,edge y)
+{
+	return (x.wt<y.wt);
+}
+
+
+void generate()
+{
+    ll n,m;
+    cin>>n>>m;
+    N=n;
+    M=m;
+    
+    reset();
+    
+    // edge G[m];
+    
+    ll i,l,r,ans;
+    
+    
+    f0(i,m)
+    {
+        G.pb({0,0,0,0});
+    	cin>>G[i].l>>G[i].r>>G[i].wt;
+    	G[i].id=i;
+    	weight[{G[i].l,G[i].r}]=G[i].wt;
+    	weight[{G[i].r,G[i].l}]=G[i].wt;
+    }
+    
+    sort(all(G),comparator);
+    
+    ans=0;
+    f0(i,m)
+    {
+    	l=find(G[i].l);
+    	r=find(G[i].r);
+    	
+    	if(l==r) continue;
+    	
+    	mst.pb(G[i]);
+    	inMST.insert({G[i].l,G[i].r});
+    	
+    	
+        unite(l,r);
+    	ans+=G[i].wt;
+    }
+    
+    mstWeight=ans;
+}
+
+
+/////////////
+
+
+
+ll solve(ll a,ll b)
+{
+	
+	ll ans;
+	
+	// if inMST return mst
+	if(inMST.find({a,b})!=inMST.end() or inMST.find({b,a})!=inMST.end())
+	{
+	    ans=mstWeight;
+	}
+	else
+	{
+	    ans=mstWeight-query_max_in_path(a,b);
+	    ans+=weight[{a,b}];
+	}
+	
+	return ans;
+}
+
+
+/*
+
+if edge is in mst:
+-> print mst
+
+if not:
+take simplest path from l to r
+remove heaviest edge
+join with current edge
+-> mst-max+cur
+
+*/
+
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        // prefer int:)
+        
+        generate();
+        
+        // cout<<mstWeight<<ln;
+        
+        n=N;
+        // reseting
+        f0(i,n+2)
+        {
+        	f0(j,MX+1)
+        	{
+        		dp[i][j]=-1;
+        	}
+        }
+        
+        
+        
+        // only for t=1:)
+        
+        // f0(i,n-1)
+        for(auto it:mst)
+        {
+        // 	cin>>l>>r>>tmp;
+            l=it.l;
+            r=it.r;
+            tmp=it.wt;
+            
+            // cout<<l<<" "<<r<<" "<<tmp<<ln;
+            
+        	adj[l].pb(r);
+        	adj[r].pb(l);
+        	
+        // 	weight[{l,r}]=tmp;/// inMST=mst only weight=all
+        // 	weight[{r,l}]=tmp;
+        }
+        
+        precompute(n);
+        
+        // subtask: input=MST:)
+        
+        m=M;
+        
+        ll sol[m];
+        
+        f0(i,m)
+        {
+            ans=solve(G[i].l,G[i].r);
+            // cout<<G[i];
+            // cout<<ans<<ln;
+            sol[G[i].id]=ans;
+        }
+        
+        // display(sol);
+        f0(i,m)
+        {
+            cout<<sol[i]<<ln;
+        }
+        /*
+        while(q-->0)
+        {
+        	cin>>l>>r;
+        	
+        	ans=solve(l,r);
+        	
+        	cout<<ans<<ln;
+        }
+        */
+    }
+	return 0;
+}
+// EVERY DAMN DAY COUNTS!!

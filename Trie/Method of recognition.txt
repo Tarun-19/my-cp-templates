@@ -1,0 +1,4 @@
+sum of length of all string <=1e6
+
+sum of length of all queries <=1e6
+

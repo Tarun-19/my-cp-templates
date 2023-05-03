@@ -1,0 +1,20 @@
+// Print -1 for no solution?
+-> check minimum and maximum value possible
+-> Maybe there is only 1 case possible
+-> find all 'yes' and remaining will be '-1'
+-> stress testing code check:)
+
+
+// Change question -> now search for solution of new problem -> binary search
+
+
+
+// maximum subarray length?
+-> code for each subarray length
+-> binary search on subarray length:)
+-> use segment tree
+
+
+// Change idea, not implementation
+// Change implementation if -> unecessary if/else
+

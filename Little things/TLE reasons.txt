@@ -1,0 +1,8 @@
+for 3 pointers, fix the middle one
+now use binary or prefix for left and right part.
+
+
+
+
+
+never use <= in comparator (1213G)

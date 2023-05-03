@@ -1,0 +1,179 @@
+// Problem: F. SUM and REPLACE
+// Contest: Codeforces - Educational Codeforces Round 37 (Rated for Div. 2)
+// URL: https://codeforces.com/problemset/problem/920/F
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+const ll mxm=3e5+56;
+
+ll a[mxm];
+ll cache[1000001];
+
+void precompute()
+{
+	ll i,j;
+	fab(i,1,1e6)
+	{
+		for(j=i;j<=1e6;j+=i)
+		{
+			cache[j]++;
+		}
+	}
+}
+
+// Segment tree REVISITED:)
+
+
+ll tree[mxm<<2];// max
+ll tree2[mxm<<2];// sum
+
+
+
+void pushup(ll x)
+{
+	tree[x]=max(tree[x<<1],tree[x<<1|1]);
+	tree2[x]=(tree2[x<<1]+tree2[x<<1|1]);
+}
+
+
+// si = hash value for {ss,se}
+// which can be obtained by *2
+
+// building both trees
+void build(ll si,ll ss,ll se)
+{
+	if(ss==se)
+	{
+		tree[si]=tree2[si]=a[ss];
+		return;
+	}
+	
+	ll md=(ss+se)>>1;
+	build(si<<1,ss,md);
+	build(si<<1|1,md+1,se);
+	
+	pushup(si);
+}
+
+
+// implemented point update on whole query range
+// O(qs+qe)
+// but tree1 makes it efficient for this problem:)
+void update(ll si,ll ss,ll se,ll qs,ll qe)
+{
+	if(tree[si]<=2)// this saves from tle, max 6 repetition for a particular index
+	{
+		return;
+	}
+	
+	if(ss==se)
+	{
+		// point update, but not changing original array
+		tree[si]=tree2[si]=cache[tree2[si]];
+		return;
+	}
+	
+	ll md=(ss+se)>>1;
+	
+	if(qs<=md) update(si<<1,ss,md,qs,qe);
+	if(qe>=md+1) update(si<<1|1,md+1,se,qs,qe);
+	
+	pushup(si);
+}
+
+
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe)
+{
+	
+	if(qs<=ss and se<=qe)
+	{
+		return tree2[si];
+	}
+	
+	ll md=(ss+se)>>1;
+	ll tmp=0;
+	
+	if(qs<=md) tmp+=query(si<<1,ss,md,qs,qe);
+	if(qe>=md+1) tmp+=query(si<<1|1,md+1,se,qs,qe);
+	
+	return tmp;
+}
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    // string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    
+    precompute();
+    
+    // f1(i,1e2) cout<<cache[i]<<" ";
+    // hi;
+    // hi;
+    
+    // cin>>t;while(t--)
+    {
+        // f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>q;
+        
+        f1(i,n) cin>>a[i];
+        
+        build(1,1,n);
+        
+        while(q--)
+        {
+        	cin>>t>>l>>r;
+        	
+        	
+        	if(t==1)
+        	{
+        		
+        		update(1,1,n,l,r);
+        		
+        		continue;
+        	}
+        	
+        	
+        	ans=query(1,1,n,l,r);
+        	
+        	cout<<ans<<ln;
+        }
+        
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

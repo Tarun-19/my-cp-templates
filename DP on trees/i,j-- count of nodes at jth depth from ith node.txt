@@ -1,0 +1,99 @@
+// Problem: D. Distance in Tree
+// Contest: Codeforces - VK Cup 2012 Round 1
+// URL: https://codeforces.com/problemset/problem/161/D
+// Memory Limit: 512 MB
+// Time Limit: 3000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+ll dp[50001][501];
+vll adj[50001];
+bitset<50001> vis;
+ll n,k,sol;
+
+void dfs(ll node)// cool
+{
+	vis[node]=1;
+	
+	dp[node][0]=1;
+	
+	for(auto it:adj[node])
+	{
+		if(!vis[it])
+		{
+			dfs(it);
+			
+			ll i;
+			f1(i,k)
+			{
+				sol+=dp[node][i-1]*dp[it][k-i];
+			}
+			
+			// now earlier states will be updated..so they are not reusable
+			f1(i,k)
+			{
+				dp[node][i]+=dp[it][i-1]; // dp[i][j] -> number of nodes with jth depth from ith node:)
+			}
+		}
+	}
+}
+
+
+int main()
+{FAST;ll t=1,i,j,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>k;
+        
+        f0(i,n-1)
+        {
+        	cin>>l>>r;
+        	adj[l].pb(r);
+        	adj[r].pb(l);
+        }
+        
+        
+        dfs(1);
+        
+        
+        
+        cout<<sol<<ln;
+    }
+	return 0;
+}
+// Bacha, kabil bano kabil
+// Kaamyabi jhak maarke peeche ayegi ~Phunsukh Wangdu

@@ -1,0 +1,6 @@
+-'a' is used by default
+replace by -'A' for uppercase
+replace by smaller character for digits inclusion
+
+-'0' kr do, --> AC
+

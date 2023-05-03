@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode* left;
+	TreeNode* right;
+};
+
+
+int dfs(TreeNode* t)
+{
+	if(t==NULL) return 0;
+	
+	int tmp=dfs(t->left) + dfs(t->right) + t->val;
+	return t->val = tmp;
+}
+
+TreeNode* updateTree(TreeNode* root)
+{
+	dfs(root);
+	return root;
+}
+
+
+TreeNode* getNode(int val)
+{
+	TreeNode* tp = new TreeNode();
+	tp->val = val;
+	return tp;
+}
+
+int main()
+{
+	TreeNode* root = getNode(7);
+	root->left = getNode(5);
+	root->right = getNode(8);
+	root->left->left = getNode(2);
+	root->left->right = getNode(3);
+	root->right->right = getNode(9);
+	
+	updateTree(root);
+	
+	cout<<root->right->val<<endl;
+	
+	return 0;
+}

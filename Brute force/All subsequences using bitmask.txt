@@ -1,0 +1,68 @@
+// https://codeforces.com/problemset/problem/550/B
+
+
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    " A code is like love,
+        it has created with clear intentions at the beginning,
+            but it can get complicated:) "
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define test ll t;cin>>t;while(t--)
+#define ll long long int
+#define vll vector<ll>
+#define ff first
+#define ss second
+#define pb push_back
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+int main()
+{FAST;ll n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    // test
+    {
+        f=0;flag=0;ans=0;cnt=0;sum=0;mn=LLONG_MAX;mx=LLONG_MIN;string s;
+        cin>>n>>l>>r>>x;
+        ll a[n];
+        f0(i,n)
+        cin>>a[i];
+        
+        
+        f0(i,(1<<(n)))
+        {
+            mn=1e9;
+            mx=-1e9;
+            sum=0;
+            
+            if(!i) continue;
+            
+            f0(j,n) // reverse this for ascending order:)
+            {
+                if(i&(1<<j))
+                {
+                    // cout<<a[j]<<" ";
+                    sum+=a[j];
+                    mn=min(mn,a[j]);
+                    mx=max(mx,a[j]);
+                }
+            }
+            
+            //sum=sum of current subsequence;
+            
+            if(sum>=l&&sum<=r&&mx-mn>=x)
+            {
+                ans++;
+            }
+        }
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}

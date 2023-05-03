@@ -1,0 +1,6 @@
+
+// GCD..
+-> gcd(al, al + 1, ..., ar) = gcd(al, al + 1 - al, al + 2 - al + 1, ..., ar - ar - 1). =>(They will become multiple of gcd.. simplified one.. ::0,2,4)
+-> https://codeforces.com/blog/entry/9722?#comment-152169
+-> https://www.cut-the-knot.org/arithmetic/GcdLcmProperties.shtml
+

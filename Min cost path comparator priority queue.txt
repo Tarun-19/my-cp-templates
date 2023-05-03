@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long 
+#define R 1011
+#define C 1011
+ 
+ ll curR;
+ ll curC;
+ 
+ll dx[] = {1,-1, 0, 0};
+ll dy[] = {0, 0, 1,-1};
+ 
+struct Cell{
+    ll x;
+    ll y;
+    ll cost;
+};
+ 
+class mycomparison
+{
+public:
+  bool operator() (const Cell &lhs, const Cell &rhs) const
+  {
+    return (lhs.cost > rhs.cost);
+  }
+};
+ 
+bool isSafe(ll x, ll y){
+    return x >= 0 && x < curR && y >= 0 && y < curC;
+}
+ 
+ll minCost(ll cost[R][C], ll m, ll n) {
+    ll dp[R][C];
+    bool visited[R][C];
+    for(ll i = 0; i < R; i++) {
+        for(ll j = 0; j < C; j++) {
+            dp[i][j] = 1e18;
+            visited[i][j] = false;
+        }
+    }
+     
+    priority_queue<Cell, vector<Cell>, mycomparison> pq;
+     
+    dp[0][0] = cost[0][0];
+    pq.push({0, 0, cost[0][0]});
+     
+    while(!pq.empty()) {
+        Cell cell = pq.top();
+        pq.pop();
+        ll x = cell.x;
+        ll y = cell.y;
+        if(visited[x][y]) continue;
+ 
+        visited[x][y] = true;
+        for(ll i = 0; i < 4; i++) {
+            ll next_x = x + dx[i];
+            ll next_y = y + dy[i];
+            if(isSafe(next_x, next_y) && !visited[next_x][next_y]) {
+                dp[next_x][next_y] = min(dp[next_x][next_y],
+                   dp[x][y] + cost[next_x][next_y]);
+                pq.push({next_x, next_y, dp[next_x][next_y]});
+            }
+        }
+    }
+    return dp[m][n];       
+}
+ 
+int main()
+{
+   ll cost[R][C] = { {1, 8, 8, 1, 5},
+                      {4, 1, 1, 8, 1},
+                      {4, 2, 8, 8, 1},
+                      {1, 5, 8, 8, 1} };
+    ll n,m;
+    n=4;
+    m=5;
+    
+    curR=n;
+    curC=m;
+    
+    
+    cout<<minCost(cost,3,4);
+   return 0;
+}
+
+// https://ideone.com/tvKC9r
+// https://www.geeksforgeeks.org/min-cost-path-dp-6/

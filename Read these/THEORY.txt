@@ -1,0 +1,2 @@
+https://www.quora.com/What-is-the-number-of-ways-in-which-n-identical-objects-can-be-divided-into-r-groups-where-each-group-can-have-any-number-of-objects-including-0-The-formula-is-n+r-1-C-r-1
+

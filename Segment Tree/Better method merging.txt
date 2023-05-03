@@ -1,0 +1,175 @@
+// Problem: E. Non-Decreasing Dilemma
+// Contest: Codeforces - Codeforces Round #742 (Div. 2)
+// URL: https://codeforces.com/contest/1567/problem/E
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll N=200010;//10^5
+
+struct node
+{
+	ll tot;
+	ll l,r;
+	bool all;
+};
+
+ll comb(ll n)
+{
+	n=(n*n+n)/2;
+	return n;
+}
+
+
+node st[4*N];
+ll a[N];
+
+
+node merge(node x,node y,ll md) // md not required if pre/suf is of no use:)
+{
+	node tp={0,0,0,0};
+	
+	// ss,md ::: md+1,se
+	
+	// md<->md+1 id joining edge
+	
+	if(a[md]>a[md+1])
+	{
+		tp.tot=x.tot+y.tot;
+		tp.l=x.l;
+		tp.r=y.r;
+		tp.all=0;
+		return tp;
+	}
+	
+	tp.tot=x.tot+y.tot-comb(x.r)-comb(y.l)+comb(x.r+y.l);
+	tp.l=x.l;
+	tp.r=y.r;
+	
+	if(x.all==true)
+	{
+		tp.l+=y.l;
+	}
+	if(y.all==true)
+	{
+		tp.r+=x.r;
+	}
+	
+	if(x.all and y.all)
+	tp.all=true;
+	else tp.all=false;
+	
+	return tp;
+}
+
+
+void update(ll si,ll ss,ll se,ll pos)
+{
+	if(ss==se)
+	{
+		st[si]={1,1,1,1};
+		return;
+	}
+	
+	ll md=(ss+se)/2;
+	if(pos<=md) update(2*si,ss,md,pos);
+	else update(2*si+1,md+1,se,pos);
+	
+	st[si]=merge(st[2*si],st[2*si+1], md);
+	
+}
+
+
+node query(ll si,ll ss,ll se,ll qs,ll qe)
+{
+	if(se<qs||ss>qe) return {0,0,0,0};
+	if(ss==qs and se==qe) return st[si];
+	
+	ll md=(ss+se)/2;
+	
+	
+	if(qe<=md)
+	{
+		return query(2*si,ss,md,qs,qe);
+	}
+	if(qs>md)
+	{
+		return query(2*si+1,md+1,se,qs,qe);
+	}
+	node l=query(2*si,ss,md,qs,md);
+	node r=query(2*si+1,md+1,se,md+1,qe);
+	
+	return merge(l,r,md); // merging is to be done of 2 different adjacent segments only:)
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>q;
+        f1(i,n)
+        {
+            cin>>tmp;
+            a[i]=tmp;
+            update(1,1,n,i);
+        }
+        
+        
+        
+        while(q--)
+        {
+        	cin>>z;
+        	
+        	if(z==1)
+        	{
+        		cin>>x>>r;
+        		a[x]=r;
+        		
+        		update(1,1,n,x);
+        		
+        	}
+        	else
+        	{
+        		cin>>l>>r;
+        		
+        		node sol=query(1,1,n,l,r);
+        		ans=sol.tot;
+        		cout<<ans<<ln;
+        	}
+        }
+        
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

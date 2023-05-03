@@ -1,0 +1,98 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    " A code is like love,
+        it has created with clear intentions at the beginning,
+            but it can get complicated:) "
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);
+bool sortbysec(pair<ll,ll> a,pair<ll,ll> b)//(i+1,i)
+{return (a.second<b.second);}
+
+ll mod;
+
+ll power(ll x,ll y)//0^0=1
+{ll res=1;x=x%mod;if(x==0)return 0;while(y>0){if(y&1)res=(res*x)%mod;y=y>>1;x=(x*x)%mod;}return res;}
+
+
+ll mulmod(ll a, ll b,ll c){ // (a*b)%c
+    ll x = 0,y=a%c;
+    while(b > 0){
+    if(b%2 == 1){
+        x = (x+y)%c;
+    }
+    y = (y*2LL)%c;
+    b /= 2;
+    }
+    return x%c;
+}
+ 
+ll binPower(ll a , ll n , ll mod)// (a^b)%c
+{
+	ll res = 1;
+	while(n)
+	{
+		if(n & 1)
+		res = mulmod(res , a , mod);
+		n >>= 1;
+		a = mulmod(a , a , mod);
+	}
+	return res % mod;
+}
+
+ll probablyPrime(ll n)
+{
+    if(n<=4) return n==2||n==3;
+    ll a,i;
+    f0(i,10)
+    {
+        a=2+rand()%(n-3);
+        // if(power(a,n-1)!=1) Thi gives WA bcz of overflow on multiplication:)
+        if(binPower(a,n-1,n)!=1)// CORRECT
+        return 0;
+    }
+    return 1;
+}
+
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        
+        mod=n;// IMPORTANT :)
+        x=probablyPrime(n);
+        
+        if(x) cout<<"YES"<<ln;
+        else cout<<"NO"<<ln;
+    }
+	return 0;
+}

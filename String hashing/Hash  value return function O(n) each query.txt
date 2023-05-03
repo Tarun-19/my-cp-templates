@@ -1,0 +1,93 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    Don't stop until you feel proud.(P.S. don't feel proud;)
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll int
+#define ld long double
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+
+
+ll hashing_is_cool(string const& str)
+{
+    ll pow_p=1,p=31,ans=0,i;
+    f0(i,str.size())
+    {
+        ans+=((str[i]-96)*pow_p)%mod;
+        ans%=mod;
+        pow_p*=p;
+        pow_p%=mod;
+    }
+    return ans;
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;
+    cin>>t;while(t--)
+    {
+        ans=0;
+        cin>>n;
+        ll a[n];
+        set<string>st;
+        vector<string>str(n);
+        set<ll>mappu;
+        
+        f0(i,n)
+        {
+            cin>>str[i];
+            // st.insert(str[i]);
+            tmp=hashing_is_cool(str[i]);
+            mappu.insert(tmp);
+        }
+        
+        f0(i,n)
+        {
+            fab(j,i+1,n-1)
+            {
+                if(str[i][0]==str[j][0]) continue;
+                
+                swap(str[i][0],str[j][0]);
+                
+                l=hashing_is_cool(str[i]);
+                r=hashing_is_cool(str[j]);
+                if(mappu.find(l)==mappu.end()&&mappu.find(r)==mappu.end())
+                // if(st.find(str[i])==st.end()&&st.find(str[j])==st.end())
+                ans++;
+                
+                swap(str[i][0],str[j][0]);
+            }
+        }
+        
+        cout<<ans*2<<ln;
+    }
+	return 0;
+}

@@ -1,0 +1,13 @@
+you can divide all paths in two parts of vertical section:)
+
+Triangle -> 2 slopes
+
+'/\'  -> '/' + '\'
+
+Eg: https://codeforces.com/contest/192/problem/E
+//////////////////////////////////////////////////////
+
+
+
+
+

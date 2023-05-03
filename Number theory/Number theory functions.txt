@@ -1,0 +1,20 @@
+
+int isPrime(int n)
+{
+	for(int i=2; i*i<=n; i++) 
+		if(n%i == 0)
+			return 0;
+	return 1;
+}
+
+
+bool isComposite[MAX+10]={false};
+void sieve()//WA for 0,1...obs..
+{
+    for (int i=2; i*i<=MAX; i++) 
+    {
+        if (isComposite[i]==false)
+        for (int j=2; j*i<=MAX; j++)
+        isComposite[i*j] = true;
+    }
+}

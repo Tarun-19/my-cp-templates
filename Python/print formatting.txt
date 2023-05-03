@@ -1,0 +1,11 @@
+t=int(input())
+i=int("0")
+while(i<t):
+    i=i+1
+    m,k=map(int,input().split())
+    m=1.0/(1.0+m*k+k)
+    print ("Case #%d: %.8f"%(i,m))
+
+
+////For not changing line, use this:
+print(ans,end=" ")

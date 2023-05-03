@@ -1,0 +1,52 @@
+/*
+n people:
+b and d(1=b<d=109) // ranges
+birth and death year
+
+Output:
+Print two integer numbers:
+y — the year with a maximum number of people alive
+and
+k — the number of people alive in year y
+
+In the case of multiple possible solutions, print the solution with minimum year.
+*/
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define f0(i,n) for(i=0;i<n;i++)
+using namespace std; 
+int main() 
+{ 
+    FAST;
+    ll i,n,x,y,p,q,tmp,c,cnt,t,ans;
+    // cin>>t;
+    t=1;
+    while(t--)
+    {
+        cin>>n;
+        
+        vector<pair<ll,ll>> v;
+        f0(i,n)
+        {
+            cin>>x>>y;
+            v.push_back({x,1});
+            v.push_back({y,-1});
+        }
+        
+        sort(v.begin(),v.end());
+        cnt=-1;tmp=0;
+        f0(i,v.size())
+        {
+            tmp+=v[i].second;
+            if(tmp>cnt)
+            {
+                cnt=tmp;
+                ans=v[i].first;
+            }
+        }
+        
+        cout<<ans<<" "<<cnt<<"\n";
+    }
+    return 0; 
+} 

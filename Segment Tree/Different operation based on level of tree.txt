@@ -1,0 +1,137 @@
+// Problem: D. Xenia and Bit Operations
+// Contest: Codeforces - Codeforces Round #197 (Div. 2)
+// URL: https://codeforces.com/problemset/problem/339/D
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+ll a[132000];
+ll st[132000<<2];
+
+
+void build(ll si,ll ss,ll se,ll lvl)
+{
+	if(ss==se)
+	{
+		st[si]=a[ss];
+		// cout<<st[si]<<","<<a[ss]<<","<<ss;hi;
+		return;
+	}
+	
+	ll md=(ss+se)>>1;
+	
+	build(si<<1,ss,md,lvl-1);
+	build(si<<1|1,md+1,se,lvl-1);
+	
+	if(lvl&1)
+	{
+		st[si]=st[si<<1]|st[si<<1|1];
+	}
+	else
+	{
+		st[si]=st[si<<1]^st[si<<1|1];
+	}
+}
+
+
+void update(ll si,ll ss,ll se,ll lvl,ll p,ll b)
+{
+	if(ss==se)
+	{
+		// p==ss
+		a[p]=b;// or do it in main()
+		// st[si]=a[ss];
+		st[si]=b;
+		return;
+	}
+	
+	ll md=(ss+se)>>1;
+	
+	if(p<=md) update(si<<1,ss,md,lvl-1,p,b);
+	else update(si<<1|1,md+1,se,lvl-1,p,b);
+	
+	if(lvl&1)
+	{
+		st[si]=st[si<<1]|st[si<<1|1];
+	}
+	else
+	{
+		st[si]=st[si<<1]^st[si<<1|1];
+	}
+}
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>q;
+        // ll a[1<<n];
+        f1(i,1<<n)
+        {
+            cin>>tmp;
+            a[i]=tmp;
+            // mappu[tmp]++;
+        }
+        
+        build(1,1,1<<n,n);
+        
+        
+        // f1(i,10)
+        // {
+        	// cout<<st[i]<<" ";
+        // }
+        // hi;
+        
+        // cout<<st[1]<<ln;
+        // hi;
+        
+        while(q--)
+        {
+        	ll b;
+        	cin>>p>>b;
+        	
+        	update(1,1,1<<n,n,p,b);
+        	
+        	ans=st[1];
+        	
+        	cout<<ans<<ln;
+        }
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

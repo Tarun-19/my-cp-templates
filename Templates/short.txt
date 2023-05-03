@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+#define test ll t;cin>>t;while(t--)
+#define ll long long int
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+using namespace std;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ll n,x,y,z,l,r,i,j,k,m,c,cnt;
+    test
+    {
+        cin>>n;
+        
+        ll a[n];
+        fab(i,0,n-1)
+        cin>>a[i];
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+	return 0;
+}

@@ -1,0 +1,136 @@
+// Problem: D. Fight Against Traffic
+// Contest: Codeforces - Educational Codeforces Round 40 (Rated for Div. 2)
+// URL: https://codeforces.com/problemset/problem/954/D
+// Memory Limit: 256 MB
+// Time Limit: 1000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+ vll adj[1001];
+ bitset<1001> vis;
+ ll dis[1001],dist[1001];
+ ll ed[1001][1001];
+ 
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string str;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+    	ll s;
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m>>s>>t;
+        
+        
+        f0(i,m)
+        {
+        	cin>>x>>y;
+        	vec.pb({x,y});
+        	adj[x].pb(y);
+        	adj[y].pb(x);
+        	ed[x][y]=1;
+        	ed[y][x]=1;
+        }
+        
+        f0(i,n+1)
+        {
+        	dis[i]=mod;
+        	dist[j]=mod;
+        }
+        
+        queue<ll> qu;
+        qu.push(s);
+        dis[s]=0;
+        vis[s]=1;
+        
+        while(qu.size())
+        {
+        	x=qu.front();
+        	qu.pop();
+        	
+        	for(auto it:adj[x])
+        	{
+        		if(!vis[it])
+        		{
+        			dis[it]=dis[x]+1;
+        			vis[it]=1;
+        			qu.push(it);
+        		}
+        	}
+        }
+        
+        
+        while(qu.size()) qu.pop();
+        f0(i,n+1) vis[i]=0;
+        
+        qu.push(t);
+        dist[t]=0;
+        vis[t]=1;
+        
+        while(qu.size())
+        {
+        	x=qu.front();
+        	qu.pop();
+        	
+        	for(auto it:adj[x])
+        	{
+        		if(!vis[it])
+        		{
+        			dist[it]=dist[x]+1;
+        			vis[it]=1;
+        			qu.push(it);
+        		}
+        	}
+        }
+        
+        f1(i,n)
+        {
+        	fab(j,i+1,n)
+        	{
+        		// if(bt[i]==0 or bt[j]==0)//// WA bcz this is not a tree:)
+        		
+        		if(dis[i]+1+dist[j]>=dis[t] and dist[i]+1+dis[j]>=dist[s]) // trick
+        		{
+        			if(ed[i][j]==0)
+        			ans++;
+        		}
+        	}
+        }
+        
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

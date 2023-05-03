@@ -1,0 +1,109 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+ 
+    Don't stop until you feel proud.(P.S. don't feel proud;)
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll MXM=1e5+10;
+
+ll a[MXM],b[MXM];
+bitset<5001> tree1[4*MXM],tree2[4*MXM]; // bitset segement tree for a & b respectively
+
+void build(ll si,ll ss,ll se)
+{
+	if(ss==se)
+	{
+		tree1[si][a[ss]]=1;
+		tree2[si][b[ss]]=1;
+		return;
+	}
+	
+	ll md=(ss+se)/2;
+	build(2*si,ss,md);
+	build(2*si+1,md+1,se);
+	
+	tree1[si]=tree1[2*si]|tree1[2*si+1];
+	tree2[si]=tree2[2*si]|tree2[2*si+1];
+}
+
+
+bitset<5001> query1(ll si,ll ss,ll se,ll qs,ll qe)
+{
+	if(qe<ss||qs>se) return 0;
+    if(qe>=se&&qs<=ss) return tree1[si];
+    
+    ll md=(ss+se)/2;
+    
+    bitset<5001> l=query1(2*si,ss,md,qs,qe);
+    bitset<5001> r=query1(2*si+1,md+1,se,qs,qe);
+    return l|r;
+}
+
+bitset<5001> query2(ll si,ll ss,ll se,ll qs,ll qe)
+{
+	if(qe<ss||qs>se) return 0;
+    if(qe>=se&&qs<=ss) return tree2[si];
+    
+    ll md=(ss+se)/2;
+    
+    bitset<5001> l=query2(2*si,ss,md,qs,qe);
+    bitset<5001> r=query2(2*si+1,md+1,se,qs,qe);
+    return l|r;
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        
+        f1(i,n) cin>>a[i];
+        f1(i,n) cin>>b[i];
+        
+        build(1,1,n);
+        cin>>q;
+        
+        while(q--)
+        {
+        	ll la,ra,lb,rb;
+        	cin>>la>>ra;
+        	cin>>lb>>rb;
+        	
+        	bitset<5001>res=query1(1,1,n,la,ra) | query2(1,1,n,lb,rb);
+        	ans=res.count();
+        	
+        	cout<<ans<<ln;
+        }
+    }
+	return 0;
+}
+// You didn't come this far to only come this far
+// https://www.codechef.com/problems/DISNUMB/

@@ -1,0 +1,175 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+const int N = 300099; 
+  
+// Adjacency list to store the 
+// tree nodes connection 
+vector<int> v[N]; 
+  int pp[N];
+  int ans=0;
+// stores the index of node in DFS 
+unordered_map<int, int> mp; 
+  
+// stores the index of node in 
+// original node 
+vector<int> a; 
+  
+  
+const int MAX=300099;
+bool isComposite[MAX+10]={false};
+void sieve()
+{
+    isComposite[0]=isComposite[1]=true;//check
+    for (int i=2; i*i<=MAX; i++)
+    {
+        if (isComposite[i]==false)
+        for (int j=2; j*i<=MAX; j++)
+        isComposite[i*j] = true;
+    }
+}
+  
+bool isPrime(int n)
+{
+    if(n<=1) return false;
+    if(n<=3) return true;
+    
+    if(isComposite[n]) return false;
+    return true;
+}
+
+
+// Function to call DFS and count nodes 
+// under that subtree 
+void dfs(int under[], int child, int parent) 
+{ 
+  
+    // stores the DFS of tree 
+    a.push_back(child); 
+  
+    // hieght of subtree 
+    under[child] = 1; 
+  
+    // iterate for children 
+    for (auto it : v[child]) { 
+  
+        // if not equal to parent 
+        // so that it does not traverse back 
+        if (it != parent) { 
+  
+            // call DFS for subtree 
+            dfs(under, it, child); 
+  
+            // add the height 
+            under[child] += under[it]; 
+        } 
+    } 
+} 
+  
+// Function to print the DFS of subtree of node 
+void printDFSofSubtree(int node, int under[]) 
+{ 
+    // index of node in the original DFS 
+    int ind = mp[node]; 
+  
+    // height of subtree of node 
+    int height = under[node]; 
+  
+    // cout << "The DFS of subtree " << node << ": "; 
+  
+    // print the DFS of subtree 
+    for (int i = ind; i < ind + under[node]; i++) { 
+        // cout << a[i] << " "; 
+        if(isPrime(pp[a[i]]))
+        ans++;
+    } 
+    // cout << endl; 
+} 
+  
+// Function to add edges to a tree 
+void addEdge(int x, int y) 
+{ 
+    v[x].push_back(y); 
+    v[y].push_back(x); 
+} 
+  
+// Marks the index of node in original DFS 
+void markIndexDfs() 
+{ 
+    int size = a.size(); 
+  
+    // marks the index 
+    for (int i = 0; i < size; i++) { 
+        mp[a[i]] = i; 
+    } 
+} 
+  
+// Driver Code 
+int main() 
+{ 
+    ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+    int n,i,j,k,l,r,tmp,q,t; 
+  cin>>t;
+  sieve();
+  while(t--){
+  
+  cin>>n>>q;
+  
+  mp.clear();
+  a.clear();
+  for(i=0;i<=n+10;i++)
+  {
+      v[i].clear();
+  }
+  
+  for(i=1;i<=n;i++) cin>>pp[i];
+    // add edges of a tree 
+    // set<pair<int,int>> st;
+    for(i=1;i<=n-1;i++)
+    {
+        cin>>l>>r;
+        // if(st.count({l,r})) continue;
+        addEdge(l,r);
+        // st.insert({l,r});
+        // st.insert({r,l});
+    }
+    // addEdge(2, 4); 
+    // addEdge(2, 5); 
+    // addEdge(4, 6); 
+    // addEdge(4, 7); 
+  
+    // array to store the height of subtree 
+    // of every node in a tree 
+    int under[n + 1]; 
+  
+    // Call the function DFS to generate the DFS 
+    dfs(under, 1, 0); 
+  
+    // Function call to mark the index of node 
+    markIndexDfs(); 
+  
+  while(q--)
+  {
+      cin>>tmp;
+      if(tmp==1)
+      {
+          cin>>i>>j;
+          pp[i]=j;
+          continue;
+      }
+      cin>>i;
+      ans=0;
+      printDFSofSubtree(i, under); 
+      cout<<ans<<"\n";
+  }
+  
+//   cout<<"\n";
+      
+  }
+    // Query 1 
+    // printDFSofSubtree(2, under); 
+  
+    // Query 1 
+    // printDFSofSubtree(4, under); 
+  
+    return 0; 
+} 

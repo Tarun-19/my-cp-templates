@@ -1,0 +1,130 @@
+// Problem: E. Collisions
+// Contest: Codeforces - Codeforces Beta Round #34 (Div. 2)
+// URL: https://codeforces.com/contest/34/problem/E
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<"\n";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+int main()
+{FAST;ll n,i,j,k,len,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        ld t;
+        cin>>n>>t;
+        
+        ld x[n],v[n],m[n];
+        
+        f0(i,n)
+        {
+        	cin>>x[i]>>v[i]>>m[i];
+        }
+        
+        // one dimensional motion only
+        
+        
+        ld tp;
+        ld eps=1e-10;// larger?
+        
+        
+        // replace 0 with epsilon... dt
+        
+        
+        while(1)
+        {
+        	ld mn; // next upcoming collision after mn seconds:)
+        	mn=1e17;
+        	
+        	f0(i,n)
+        	{
+        		fab(j,i+1,n-1)
+        		{
+        			if(fabs(v[i]-v[j])<eps) // same velocity
+        			continue;
+        			
+        			tp=(x[j]-x[i])/(v[i]-v[j]);
+        			
+        			if(tp<0+eps) // negative time
+        			continue;
+        			
+        			mn=min(mn,tp);
+        		}
+        	}
+        	
+        	if(mn>t)
+        	break;
+        	
+        	f0(i,n)
+        	{
+        		x[i]+=mn*v[i];
+        	}
+        	
+        	f0(i,n)
+        	{
+        		fab(j,i+1,n-1)
+        		{
+        			if(fabs(x[i]-x[j])<eps) // same position
+        			{
+        				ld v1=v[i];
+        				ld v2=v[j];
+        				
+        				v[i]=((m[i]-m[j])*v1+2.0*m[j]*v2)/(m[i]+m[j]);
+        				v[j]=((m[j]-m[i])*v2+2.0*m[i]*v1)/(m[i]+m[j]);
+        			}
+        		}
+        	}
+        	
+        	
+        	t-=mn;
+        }
+        
+        // time left
+        f0(i,n)
+        {
+        	x[i]+=t*v[i];
+        }
+        
+        cout<<fixed<<setprecision(10);
+        display(x);
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// It's gonna be legendary!!
+// Wait for it ~Barney

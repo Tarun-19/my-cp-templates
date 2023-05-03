@@ -1,0 +1,131 @@
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=998244353;bool debug=false;
+
+vll adj[1000000+9];
+ll col[1000000+9];
+bool vis[1000000+9];
+bool not_bipartite=false;
+
+ll col_freq[2];
+
+ll n,m;
+
+void reset()
+{
+	ll i;
+	f0(i,n+4)
+	{
+		adj[i].clear();
+		vis[i]=0;
+		col[i]=-1;
+	}
+}
+
+void dfs(ll node,ll c)// alternate coloring
+{
+	vis[node]=1;
+	col[node]=c;
+	col_freq[c]++;
+	
+	for(auto it:adj[node])
+	{
+		if(col[it]==col[node])
+		{
+			not_bipartite=true;
+			return;
+		}
+		
+		if(vis[it]) continue;
+		dfs(it,c^1);
+	}
+}
+
+ll power(ll x,ll y)//0^0=1
+{ll res=1;x=x%mod;if(x==0)return 0;while(y>0){if(y&1)res=(res*x)%mod;y=y>>1;x=(x*x)%mod;}return res;}
+ll inverse(ll n)
+{return power(n,mod-2);}
+
+int main()
+{FAST;ll t=1,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m;
+        
+        reset();
+        
+        f0(i,m)
+        {
+        	cin>>l>>r;
+        	adj[l].pb(r);
+        	adj[r].pb(l);
+        }
+        
+        ans++;
+        f1(i,n)
+        {
+        	if(vis[i]) continue;
+        	not_bipartite=false;
+        	col_freq[0]=col_freq[1]=0; // for each connected component
+        	
+        	dfs(i,0);
+        	
+        	if(not_bipartite)
+        	{
+        		ans=0;
+        		goto lbl;
+        	}
+        	
+        	// cout<<col_freq[0]<<" "<<col_freq[1]<<ln;
+        	
+        	tmp=power(2,col_freq[0])+power(2,col_freq[1]);
+        	// cout<<tmp<<ln;
+        	
+        	ans=ans*tmp;
+        	ans%=mod;
+        }
+        
+        // f1(i,4) cout<<col[i]<<" ";
+        // cout<<power(3,n)<<ln;
+        
+        lbl:
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// Either be on top or leave this crap..
+
+// https://codeforces.com/problemset/problem/1093/D

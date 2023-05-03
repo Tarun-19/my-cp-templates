@@ -1,0 +1,12 @@
+Overriding priority queue
+
+struct compare
+{
+    bool operator()(pair<int,int> p1, pair<int,int> p2)
+    {
+        if(p1.ss==p2.ss) return p1.ff<p2.ff;
+        return p1.ss<p2.ss;
+    }
+};
+
+priority_queue<pair<int, int>, vector<pair<int, int>>,compare> pq;

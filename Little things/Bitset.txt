@@ -1,0 +1,3 @@
+ans=bt.to_ullong(); // for long long:)
+
+

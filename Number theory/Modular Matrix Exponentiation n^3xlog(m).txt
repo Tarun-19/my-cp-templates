@@ -1,0 +1,110 @@
+/*  Author: cf:Tarun_19/cc:tarun_19_
+    E-mail: tarunkumar281200@gmail.com
+=========="Impossible only means that you haven't found the solution yet"=======
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ull unsigned long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define mp make_pair
+#define ff first
+#define ss second
+#define bs binary_search
+#define lb lower_bound
+#define ub upper_bound
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll MAX=INT_MAX;const ll MIN=INT_MIN;
+ll dx[]={0,1,0,-1};
+ll dy[]={1,0,-1,0};
+bool sortbysec(pair<ll,ll> a,pair<ll,ll> b)//(i+1,i)
+{return (a.second<b.second);}
+ll lcm(ll x,ll y){return (x*y)/__gcd(x,y);}
+ll power(ll x,ll y)//0^0=1
+{ll res=1;x=x%mod;if(x==0)return 0;while(y>0){if(y&1)res=(res*x)%mod;y=y>>1;x=(x*x)%mod;}return res;}
+ll inverse(ll n)
+{return power(n,mod-2);}
+ll nCkmod(ll n,ll k)
+{ll i,r=1;if(n<k)return 0;for(i=n;i>n-k;i--)r=(r*i)%mod;for(i=1;i<=k;i++)r=(r*inverse(i))%mod;return r;}
+ll nCk(ll n,ll k)//TLE
+{ll C[k+1]={0};C[0]=1;for(ll i=1;i<=n;i++)for(ll j=min(i,k);j>0;j--)C[j]=C[j]+C[j-1];return C[k];}
+bool isPrime(ll n)
+{if(n<=1)return false;if(n<=3)return true;if(n%2==0||n%3==0)return false;for(int i=5;i*i<=n;i=i+6)if(n%i==0||n%(i+2)==0)return false;return true;}
+
+
+ll M=4;//MxM
+vvll mul(vvll A,vvll B)
+{
+    ll i,j,k;
+    vvll C(M+1,vll(M+1));
+    f0(i,M)
+        f0(j,M)
+            f0(k,M)
+                C[i][j] = (C[i][j]%mod + ((A[i][k]%mod)*(B[k][j] %mod)))%mod ;
+    return C;
+}
+vvll mat_pow(vvll A,ll p)
+{
+    if(p==1)
+        return A;
+    vvll res=mat_pow(A,p/2);
+    res=mul(res,res);
+    if(p&1) res=mul(res,A);
+    return res;
+}
+
+int main()
+{
+    FAST;
+    ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;
+    char ch;
+    vll v;
+    vpll vec;
+    unordered_map<ll,ll> mappu;
+    pair<ll,ll> pr;
+    t=1;
+    while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        
+        vvll mt(M+1,vll(M+1));//+1
+        f0(i,M)
+        f0(j,M)
+        mt[i][j]=(i==j)?0:1;
+        
+        vvll res_mat=mat_pow(mt,n);//mt^n==>MxM square matrix
+        
+        // f0(i,M)
+        // {
+            // f0(j,M)
+            // cout<<res_mat[i][j]<<" ";
+            // cout<<ln;
+        // }
+        ans=res_mat[0][0];
+        cout<<ans<<ln;
+    }
+	return 0;
+}

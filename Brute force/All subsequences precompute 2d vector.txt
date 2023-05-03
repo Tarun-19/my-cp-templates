@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define pb push_back
+#define pp pop_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define hi cout<<"hi\n";
+#define ln "\n"
+using namespace std;
+
+vvll vec;
+
+void subsetsUtil(vll& A,vvll& res,vll& subset, ll index)
+{
+    ll i;
+    res.pb(subset);
+    fab(i,index,A.size()-1)
+    {
+        subset.pb(A[i]);
+        subsetsUtil(A,res,subset,i+1);
+        subset.pp();
+    }
+    return;
+}
+//returns the subsets of vector A.
+vvll subsets(vll& A) 
+{ 
+    vll subset;
+    vvll res;
+    ll index=0;
+    subsetsUtil(A,res,subset,index);
+    return res;
+}
+
+int main()
+{
+    // find the subsets of below vector.
+    ll i,j;
+    vector<ll> array = { 1, 2, 3 };
+    
+    vec.clear();//working for t=1;
+    
+    
+    //vec stores all subsets
+    vec=subsets(array);
+    
+    
+    
+    for (i=0;i<vec.size();i++)
+    {
+        for(j=0;j<vec[i].size();j++)
+        cout<<vec[i][j]<<" ";
+        cout<<endl;
+    }
+    
+    return 0;
+}
+

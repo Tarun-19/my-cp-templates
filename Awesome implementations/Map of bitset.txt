@@ -1,0 +1,112 @@
+// Problem: I. Palindrome Pairs
+// Contest: Codeforces - Bubble Cup 11 - Finals [Online Mirror, Div. 1]
+// URL: https://codeforces.com/problemset/problem/1045/I
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+// “Time has a wonderful way of showing us what really matters” – Margaret Peters.
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+struct Comparer
+{
+    bool operator() (const bitset<30> &b1, const bitset<30> &b2) const
+    {
+        return b1.to_ulong() < b2.to_ulong();
+    }
+};
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        
+        map<bitset<30>,ll,Comparer> M,M2;
+        
+        f0(i,n)
+        {
+        	cin>>s;
+        	bitset<30> bt(0);
+        	
+        	for(auto it:s)
+        	{
+        		bt[it-'a']=(bt[it-'a'])?0:1;
+        	}
+        	
+        	M[bt]++;
+        }
+        
+        auto nc2=[&](ll k)
+        {
+        	if(k<2)
+        	return 0LL;
+        	return (k*k-k)/2;
+        };
+        
+        // cout<<M.size()<<ln;
+        
+        for(auto it:M)
+        {
+        	ans+=nc2(it.ss);
+        }
+        
+        
+        M2=M;
+        for(auto it:M)
+        {
+            bitset<30>bt=it.ff;
+            
+            f0(i,30)
+            {
+                bt[i]=(bt[i])?0:1;
+                
+                cnt+=it.ss*M2[bt];// makes new copy in the map used:)
+                bt[i]=(bt[i])?0:1;
+            }
+            
+        }
+        
+        
+        cnt/=2;
+        ans+=cnt;
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// Boyhood to manhood is a rough transition-
+// make yourself worthy or you are nothing:)

@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+float a[12][60];
+
+void calcAngle(float h,float m,int i,int j)
+{
+    float an;
+    an=fabs((60.0000*h)-(11.0000*m))/2.0000;
+    
+    if(an>180.0000)
+    an=360.0000-an;  //an=an-180; hoga shayd(got ac with this)
+    
+    a[i][j]=an;
+    
+}
+
+
+int main()
+{
+    int i,j,k,x,c=0;
+    float n,h,m,err;
+    
+    
+    for(i=0;i<12;i++)
+    {
+        for(j=0;j<60;j++)
+        {
+            h=i;m=j;
+            calcAngle(h,m,i,j);
+        }
+    }
+    
+    
+    
+    cin>>n;
+    err=1.0000/120.0000;
+    
+    for(i=0;i<12;i++)
+    {
+        for(j=0;j<60;j++)
+        {
+            if(abs(a[i][j]-n)<=err)
+            printf("%.2d:%.2d\n",i,j);
+        }
+    }
+    
+    
+    return 0;
+}

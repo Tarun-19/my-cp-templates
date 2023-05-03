@@ -1,0 +1,281 @@
+// Problem: E. XOR on Segment
+// Contest: Codeforces - Codeforces Round #149 (Div. 2)
+// URL: https://codeforces.com/contest/242/problem/E
+// Memory Limit: 256 MB
+// Time Limit: 4000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll N=100150;
+const ll MXM=20+1;//// watch this:)
+
+
+ll A[N]; // original array
+ll a[N][MXM]; // source array for segment tree
+ll st[4*N][MXM];
+ll lazy[4*N][MXM];
+
+void build(ll si,ll ss,ll se)
+{
+	ll i;
+    if(ss==se)
+    {
+    	f0(i,MXM)
+        {
+        	st[si][i]=a[ss][i];
+        }
+        return;
+    }
+    
+    
+    ll md=(ss+se)/2;
+    build(2*si,ss,md);
+    build(2*si+1,md+1,se);
+    
+    f0(i,MXM)
+    {
+    	st[si][i]=st[2*si][i]+st[2*si+1][i];
+    }
+}
+
+
+// lazy bit:
+// containing info on whether ith bit is set in 'each' of the numbers
+
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe,  ll pos)// may return vector:)
+{
+	// No use bcz of no updation
+    if(lazy[si][pos]!=0)
+    {
+    	ll i,tmp;
+    	
+	    tmp=lazy[si][pos];
+    	lazy[si][pos]=0;
+        
+        // this was summation
+	    // st[si][pos]+=(se-ss+1)*tmp;// ?
+	    
+	    // this is fliping:)
+	    // tot-prev
+        st[si][pos]=(se-ss+1)-st[si][pos];
+        
+	    if(ss!=se)
+    	{
+    		lazy[2*si][pos]+=tmp;
+    		lazy[2*si][pos]&=1; // bcz a[i][j] should 0 or 1, else extra 2^j will be added
+    		
+    		lazy[2*si+1][pos]+=tmp;
+    		lazy[2*si+1][pos]&=1;
+    	}
+    }
+    
+    if(qe<ss||qs>se) return 0;
+    if(qe>=se&&qs<=ss) return st[si][pos];
+    
+    ll md=(ss+se)/2;
+    
+    ll l=query(2*si,ss,md,qs,qe ,pos);
+    ll r=query(2*si+1,md+1,se,qs,qe ,pos);
+    return l+r;
+}
+
+
+
+// create updation if required.. messy code:)
+
+// This updation will not add in the way think
+// these are bits, adding val is stupidity
+
+// but adding +1 to check odd even for pos-th bit is smart:)
+
+
+void update(ll si,ll ss,ll se,ll qs,ll qe,ll val,ll pos)
+{
+	if(lazy[si][pos]!=0)
+    {
+    	ll i,tmp;
+    	
+    	// tmp will 'always' be = 1
+	    tmp=lazy[si][pos];
+    	lazy[si][pos]=0;
+        
+	    // st[si][pos]+=(se-ss+1)*tmp;
+        st[si][pos]=(se-ss+1)-st[si][pos];
+        
+	    if(ss!=se)
+    	{
+    		lazy[2*si][pos]+=tmp;
+    		lazy[2*si][pos]&=1;
+    		
+    		
+    		lazy[2*si+1][pos]+=tmp;
+    		lazy[2*si+1][pos]&=1;
+    		
+    	}
+    }
+	
+    if(qe<ss||qs>se) return;
+    
+    if(qe>=se&&qs<=ss)
+    {
+    	// val should be = 1 for correct working
+    	
+        ll tmp=(se-ss+1)*val;
+        // st[si][pos]+=tmp;
+        st[si][pos]=(se-ss+1)-st[si][pos];
+        
+        if(ss!=se)
+        {
+        	lazy[2*si][pos]+=val;
+        	lazy[2*si][pos]&=1;
+        	
+        	
+        	lazy[2*si+1][pos]+=val;
+        	lazy[2*si+1][pos]&=1;
+        }
+        return;
+    }
+    
+    
+    ll md=(ss+se)/2;
+    
+    update(2*si,ss,md,qs,qe,val,pos);
+    update(2*si+1,md+1,se,qs,qe,val,pos);
+    
+    st[si][pos]=st[2*si][pos]+st[2*si+1][pos];
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--) // horrible
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        // memo(st,0);
+        // memo(lazy,0);
+        f0(i,n*4+5)
+        {
+        	f0(j,MXM)
+        	{
+        		st[i][j]=0;
+        		// lazy[i][j]=0;
+        	}
+        }
+        
+        f1(i,n)
+        {
+        	cin>>A[i];
+        	
+        	f0(j,MXM)////
+        	{
+        		if(A[i]&(1LL<<j)) a[i][j]=1;
+        		else a[i][j]=0;
+        	}
+        	
+        }
+        
+        build(1,1,n);//not necessary since initial is '0':)
+        
+        // update(1,1,n,3,4, +1,0);
+        // update(1,1,n,3,4, +1,1);
+        // update(1,1,n,3,4, +1,2);
+        
+        // cout<<query(1,1,n,1,5 ,1);
+        
+	// MLE n=5*10^5,A[i]=2^60
+	// even after converting a[i][j]=boolean and st[i][j]=int
+        
+        cin>>q;
+        
+        
+        // f1(j,n){f0r(i,4) cout<<a[j][i];cout<<ln;}
+        
+        
+        while(q--)
+        {
+        	cin>>z;
+        	
+        	// hi;
+        	
+        	if(z==1)
+        	{
+        		cin>>l>>r;
+        		
+        		ans=0;
+        		f0(i,MXM)
+        		{
+        			tmp=query(1,1,n,l,r,i);
+        			
+        			p=(1LL<<i);
+        			ans+=p*tmp;
+        		}
+        		
+        		// cout<<"sol: ";
+        		cout<<ans<<ln;
+        	}
+        	else
+        	{
+        		cin>>l>>r>>x;
+        		
+        		f0(i,MXM)
+        		{
+        			p=(1LL<<i);
+        			if(p&x)
+        			{
+        				// tmp=
+        				update(1,1,n,l,r, +1,i);
+        				// p=(1LL<<i);
+        				// ans+=p*tmp;
+        			}
+        		}
+        		
+        		// f1(j,n)
+        		// {
+        			// f0r(i,4)
+        			// {
+        				// cout<<query(1,1,n,j,j,i);
+        			// }
+        			// cout<<ln;
+        		// }
+        	}
+        	
+        }
+        
+        
+    }
+	return 0;
+}
+// Hope is the last thing ever lost
+// https://codeforces.com/blog/entry/5837?#comment-747122

@@ -1,0 +1,40 @@
+// Author: Tarun Kumar
+// E-mail: tarunkumar281200@gmail.com
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+using namespace std;
+
+void PrimeFactorisation(ll n)
+{//not included 1
+    ll i,cnt;
+    for(i=2;i*i<=n;i++)
+    if(n%i==0)
+    {
+        cnt=0;
+        while(n%i==0) n/=i,cnt++;
+        
+        cout<<i<<"^"<<cnt<<"\n";
+    }
+    if(n>1)
+    cout<<n<<"^"<<1<<"\n";
+}
+
+int main()
+{
+    FAST;
+    ll t,n,i,j,k,l,p,q,r,ans,avg,sum;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        
+        PrimeFactorisation(n);
+        
+    }
+	return 0;
+}
+

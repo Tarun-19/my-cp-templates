@@ -1,0 +1,20 @@
+//// it is like making something as pivot
+
+// Four sum problem is perfect for getting a feel of this:)
+https://cses.fi/problemset/task/1642
+
+
+-> count no. of triplets ai<aj<ak
+Soln:
+N^3 -> simple brute
+N^2 -> meet in the middle,  for each j, smaller on left*larger on right
+NlogN is also possible:)
+
+
+-> similarly for 5lets,
+i,j,k,l,m
+N^5 can be converted into n^3(n^2 on both side of j)
+
+-> similar approach problem
+: count no. of paths with 5 nodes.
+

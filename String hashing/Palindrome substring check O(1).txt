@@ -1,0 +1,340 @@
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+// “Time has a wonderful way of showing us what really matters” – Margaret Peters.
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);bool debug=false;
+
+ll mod=1e9+7;////// not const....
+
+const ll mxm=1e6+9; // check
+
+mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());// 64bit
+
+ll power(ll x,ll y)//0^0=1
+{ll res=1;x=x%mod;if(x==0)return 0;while(y>0){if(y&1)res=(res*x)%mod;y=y>>1;x=(x*x)%mod;}return res;}
+ll inverse(ll n)
+{return power(n,mod-2);}
+
+ll kk[10] = {
+  89, 
+  101, 
+  189,
+  94,
+  621,
+  (ll)rng() % 1000 + 1051,
+  (ll)rng() % 2000 + 2761,
+  (ll)rng() % 4000 + 4441,
+  (ll)rng() % 8000 + 8111,
+  (ll)rng() % 16000 + 18883
+};
+
+ll primes[10] = {
+  533000401,
+  735632791,
+  776531419,
+  797003413,
+  817504243,
+  920419813,
+  961748941, 
+  982451653,
+  1000000007,
+  1000000009
+};
+
+
+ll dp1[mxm];
+ll dp2[mxm];
+
+ll base1;
+ll base2;
+ll m1;
+ll m2;
+
+ll inv1[mxm];
+ll inv2[mxm];
+
+
+void assign_constants()
+{
+	base1=kk[rng()%10];
+	ll y=rng()%10;
+	base2=kk[y];
+	
+	if(base1==base2)
+	{
+	    y++;
+		base2=kk[y%10];
+	}
+	
+	m1=primes[rng()%10];
+	y=rng()%10;
+	m2=primes[y];
+	
+	if(m1==m2)
+	{
+	    y++;
+		m2=primes[y%10];
+	}
+	
+	// cout<<base1<<" "<<base2<<ln;
+    // cout<<p1<<" "<<p2<<ln;
+}
+
+
+string s;// Boss :)
+
+void precompute()
+{
+	ll tmp,i,x,x2,tmp2;
+	
+	tmp=1;
+	inv1[0]=1;
+	mod=m1;
+	x=inverse(base1);
+	dp1[0]=s[0]-'a'+1;
+	
+	
+	tmp2=1;
+	inv2[0]=1;
+	mod=m2;
+	x2=inverse(base2);
+	dp2[0]=s[0]-'a'+1;
+	
+	f1(i,(ll)(s.size())-1)
+	{
+		tmp=(tmp*base1)%m1;
+		inv1[i]=(inv1[i-1]*x)%m1;
+		
+		dp1[i]=(dp1[i-1]+(s[i]-'a'+1)*tmp)%m1;
+		
+		
+		tmp2=(tmp2*base2)%m2;
+		inv2[i]=(inv2[i-1]*x2)%m2;
+		
+		dp2[i]=(dp2[i-1]+(s[i]-'a'+1)*tmp2)%m2;
+	}
+	
+}
+
+
+
+ll query1(ll l,ll r)// '0' index based
+{
+	ll ans1=dp1[r];
+	
+	if(l)
+	{
+		ans1-=dp1[l-1];
+	}
+	
+	ans1=(ans1+m1+m1)%m1;
+	ans1*=inv1[l];
+	ans1%=m1;
+	
+	return ans1;
+}
+
+ll query2(ll l,ll r)// '0' index based
+{
+	ll ans2=dp2[r];
+	
+	if(l)
+	{
+		ans2-=dp2[l-1];
+	}
+	
+	ans2=(ans2+m2+m2)%m2;
+	ans2*=inv2[l];
+	ans2%=m2;
+	
+	return ans2;
+}
+
+// for eqaulity,
+// if both equal => same string
+// else => different:)
+
+// m1*m2=m
+
+// for number of distinct substring of size k,
+// st.insert({h1,h2}); // dont multiply, as u do in case of recurring fractions.
+// st.size()=ans
+
+ll hashing_is_cool(string const& str,ll b,ll m)
+{
+    ll pow_p=1,p=b,ans=0,i;
+    f0(i,str.size())
+    {
+        ans+=((str[i]-'a'+1)*pow_p)%m;
+        ans%=m;
+        pow_p*=p;
+        pow_p%=m;
+    }
+    return ans;
+}
+
+// palindrome work
+
+ll dp1r[mxm];
+ll dp2r[mxm];
+
+
+void precompute_reverse()
+{
+	ll tmp,i,x,x2,tmp2;
+	
+	tmp=1;
+	// inv1[0]=1; //inv1[i]=pow(inverse(base1),i);
+	// mod=m1;
+	// x=inverse(base1);
+	dp1r[(ll)(s.size())-1]=s[(ll)(s.size())-1]-'a'+1;
+	
+	
+	tmp2=1;
+	// inv2[0]=1;
+	// mod=m2;
+	// x2=inverse(base2);
+	dp2r[(ll)(s.size())-1]=s[(ll)(s.size())-1]-'a'+1;
+	
+	f0r(i,(ll)(s.size())-1)
+	{
+		tmp=(tmp*base1)%m1;
+		// inv1[i]=(inv1[i-1]*x)%m1;
+		
+		dp1r[i]=(dp1r[i+1]+(s[i]-'a'+1)*tmp)%m1;
+		
+		
+		tmp2=(tmp2*base2)%m2;
+		// inv2[i]=(inv2[i-1]*x2)%m2;
+		
+		dp2r[i]=(dp2r[i+1]+(s[i]-'a'+1)*tmp2)%m2;
+	}
+}
+
+
+ll query1r(ll l,ll r)// '0' index based
+{
+	ll ans1r=dp1r[l];
+	
+	if(r<(ll)(s.size())-1)
+	{
+		ans1r-=dp1r[r+1];
+	}
+	
+	ans1r=(ans1r+m1+m1)%m1;
+	ans1r*=inv1[(ll)(s.size())-r-1];
+	ans1r%=m1;
+	
+	return ans1r;
+}
+
+ll query2r(ll l,ll r)// '0' index based
+{
+	ll ans2r=dp2r[l];
+	
+	if(r<(ll)(s.size())-1)
+	{
+		ans2r-=dp2r[r+1];
+	}
+	
+	ans2r=(ans2r+m2+m2)%m2;
+	ans2r*=inv2[(ll)(s.size())-r-1];
+	ans2r%=m2;
+	
+	return ans2r;
+}
+
+
+
+// points to be notes
+// 'mod' is variable
+// mxm ==> sigsev
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;
+    while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        assign_constants();// use within t--
+        
+        cin>>s;
+        
+        precompute();
+        precompute_reverse();
+        
+        // f0(i,(ll)(s.size())) cout<<dp1r[i]<<" ";
+        // cout<<ln;
+        
+        tmp=query1r(0,0);
+        cout<<tmp<<ln;
+        
+        // /*
+        cin>>q;
+        while(q--)
+        {
+        	cin>>l>>r;// make 0-indexed
+        	l--;
+        	r--;
+        	
+        	x=query2(l,r);
+        	y=query2r(l,r);
+        	
+        	cout<<x<<" "<<y<<" ";
+        	
+        	if(x==y)
+        	yes;// palindrome:)
+        	else
+        	no;
+        }
+        // */
+        
+    }
+	return 0;
+}
+// Remember.. everthing's gonna be alright
+
+/*
+Input:
+caaaba
+5
+1 1
+1 4
+2 3
+4 6
+4 5
+
+*/

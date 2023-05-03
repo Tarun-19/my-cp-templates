@@ -1,0 +1,138 @@
+/*  Author: Tarun Kumar
+    E-mail: tarunkumar281200@gmail.com
+
+    Don't stop until you feel proud.(P.S. don't feel proud;)
+*/#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    ll tp=1;
+    cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m;
+        ll a[n][m];
+        
+        ll up[n][m],down[n][m];
+        ll left[n][m],right[n][m];
+        memo(up,0);
+        memo(down,0);
+        memo(left,0);
+        memo(right,0);
+        
+        f0(i,n)
+        f0(j,m)
+        {
+            cin>>a[i][j];
+            up[i][j]=down[i][j]=right[i][j]=left[i][j]=a[i][j];
+        }
+        
+        
+        f0(i,n)
+        {
+            f1(j,m-1)
+            {
+            	if(left[i][j])
+                left[i][j]+=left[i][j-1];
+            }
+            fabr(j,0,m-2)
+            {
+            	if(right[i][j])
+                right[i][j]+=right[i][j+1];
+            }
+        }
+        
+        f0(i,m)
+        {
+            f1(j,n-1)
+            {
+            	if(up[j][i])
+                up[j][i]+=up[j-1][i];
+            }
+            fabr(j,0,n-2)
+            {
+            	if(down[j][i])
+                down[j][i]+=down[j+1][i];
+            }
+        }
+        
+        cout<<"UP:"<<ln;
+        f0(i,n)
+        {
+            f0(j,m) cout<<up[i][j]<<" ";
+            cout<<ln;
+        }
+        
+        cout<<"DOWN:"<<ln;
+        f0(i,n)
+        {
+            f0(j,m) cout<<down[i][j]<<" ";
+            cout<<ln;
+        }
+        
+        cout<<"LEFT:"<<ln;
+        f0(i,n)
+        {
+            f0(j,m) cout<<left[i][j]<<" ";
+            cout<<ln;
+        }
+        
+        cout<<"RIGHT:"<<ln;
+        f0(i,n)
+        {
+            f0(j,m) cout<<right[i][j]<<" ";
+            cout<<ln;
+        }
+        
+        
+        
+        
+        f0(i,n)
+        {
+            f0(j,m)
+            {
+                tmp=0;
+                if(right[i][j]>=2 and up[i][j]>=2) tmp+=right[i][j]*up[i][j];
+                if(right[i][j]>=2 and down[i][j]>=2) tmp+=right[i][j]*down[i][j];
+                
+                if(left[i][j]>=2 and up[i][j]>=2) tmp+=left[i][j]*up[i][j];
+                if(left[i][j]>=2 and down[i][j]>=2) tmp+=left[i][j]*down[i][j];
+                
+                ans+=tmp;
+            }
+        }
+        
+        cout<<"Case #"<<tp++<<": ";
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// You didn't come this far to only come this far

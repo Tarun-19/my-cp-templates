@@ -1,0 +1,139 @@
+// Problem: D. Building Bridge
+// Contest: Codeforces - CROC-MBTU 2012, Final Round (Online version, Div. 2)
+// URL: https://codeforces.com/problemset/problem/250/D
+// Memory Limit: 256 MB
+// Time Limit: 1000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+// “Time has a wonderful way of showing us what really matters” – Margaret Peters.
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+ld a,b;
+
+ll yl[100002],yr[100002],L[100002];
+
+
+
+ld A_yr(ll md,ll i) // A-->yl->yr
+{
+	ld d1=a*a+yl[md]*yl[md];
+	ld d2=(yr[i]-yl[md])*(yr[i]-yl[md])+(a-b)*(a-b);
+	
+	ld dis=L[i];
+	dis+=sqrt(d1)+sqrt(d2);
+	return dis;
+}
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m>>a>>b;
+        
+        f0(i,n)
+        cin>>yl[i];
+        
+        f0(i,m)
+        cin>>yr[i];
+        
+        f0(i,m)
+        cin>>L[i];
+        
+        
+        // A-->a->b----->B
+        // Here point B is not fixed, therefore play reverse:)
+        
+        // For each B,
+        // B------>b->a-->A
+        ld tp;
+        pair<ld,pair<ll,ll>> res={1e15,{-1,-1}};
+        
+        
+        
+        // cout<<A_yr(1, 1)<<ln<<A_yr(1, 2)<<ln;
+        
+        
+        f0(i,m)
+        {
+        	
+        	ll low=0;
+        	ll high=n-1;
+        	
+        	ll loop=0;
+        	
+        	// cout<<i<<"=>"<<ln;
+        	
+        	while(low<=high and loop++<30)
+        	// while(loop++<300)
+        	{
+        		ll md1=low+(high-low)/3;
+        		ll md2=high-(high-low)/3;
+        		
+        		// if(i==1)
+        		// cout<<low<<" "<<md1<<" "<<md2<<" "<<high<<ln;
+        		
+        		
+        		ll md=(md1+md2)/2;// special adjustment:)
+        		if(res.ff>A_yr(md,i))
+        		{
+        			res={A_yr(md,i),{md+1,i+1}};
+        		}// this is used because if (md1,md2)=(0,2), then md=1 never gets a chance.
+        		
+        		if(res.ff>A_yr(md1,i))
+        		{
+        			res={A_yr(md1,i),{md1+1,i+1}};
+        		}
+        		if(res.ff>A_yr(md2,i))
+        		{
+        			res={A_yr(md2,i),{md2+1,i+1}};
+        		}
+        		
+        		if(A_yr(md1,i)<A_yr(md2,i))
+        		high=md2;
+        		else
+        		low=md1;
+        		
+        	}
+        	
+        }
+        
+        
+        cout<<res.ss.ff<<" "<<res.ss.ss;
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// Remember.. everthing's gonna be alright

@@ -1,0 +1,142 @@
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+const ll MXM=26;// k-nary tree
+
+struct node{
+	bool ending;// if a word ends here
+	node* b[MXM];
+};
+
+node* create()
+{
+	node *tmp=new node;
+	tmp->ending=false;
+	
+	ll i;
+	fab(i,0,MXM-1)
+	{
+		tmp->b[i]=NULL;
+	}
+	return tmp;
+}
+
+
+// O(n)
+void update(node *root,string &s)// insertion only
+{
+	// checked global string 's'?
+	
+	
+	node* tmp=root;// root copy
+	
+	ll pos,i,x=s.size();
+	fab(i,0,x-1)
+	{
+		pos=s[i]-'a';
+		
+		if(tmp->b[pos]==NULL)
+		{
+			tmp->b[pos]=create();
+		}
+		
+		tmp=tmp->b[pos];
+	}
+	
+	tmp->ending=true;
+}
+
+
+// O(m)
+ll find(node* root,string &s)
+{
+	// checked global string 's'?
+	
+	node* tmp=root;// root copy
+	
+	ll pos,i,x=s.size();
+	fab(i,0,x-1)
+	{
+		pos=s[i]-'a';
+		
+		if(tmp->b[pos]==NULL)
+		{
+			return 0;
+		}
+		
+		tmp=tmp->b[pos];
+	}
+	
+	if(tmp->ending==true)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        node* root=create();
+        
+        
+        while(cin>>z)
+        {
+        	if(z==1)
+        	{
+        		cin>>s;
+        		update(root,s);
+        	}
+        	else if(z==2)
+        	{
+        		// present or not
+        		cin>>s;
+        		
+        		if(find(root,s)) yes;
+        		else no;
+        	}
+        	else break;
+        }
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

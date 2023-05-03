@@ -1,0 +1,172 @@
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll N=200150;
+const ll MXM=60+1;//// watch this:)
+
+
+ll A[N]; // original array
+ll a[N][MXM]; // source array for segment tree
+ll st[4*N][MXM];
+// ll lazy[4*N][MXM];
+
+void build(ll si,ll ss,ll se)
+{
+	ll i;
+    if(ss==se)
+    {
+    	f0(i,MXM)
+        {
+        	st[si][i]=a[ss][i];
+        }
+        return;
+    }
+    
+    
+    ll md=(ss+se)/2;
+    build(2*si,ss,md);
+    build(2*si+1,md+1,se);
+    
+    f0(i,MXM)
+    {
+    	st[si][i]=st[2*si][i]+st[2*si+1][i];
+    }
+}
+
+
+ll query(ll si,ll ss,ll se,ll qs,ll qe,  ll pos)// may return vector:)
+{
+	// No use bcz of no updation
+    // if(lazy[si]!=0)
+    // {
+    	// ll i,tmp;
+//     	
+    	// f0(i,MXM)
+    	// {
+	        // tmp=lazy[si][i];
+    	    // lazy[si][i]=0;
+//         	
+	        // st[si][i]+=(se-ss+1)*tmp;
+//         	
+	        // if(ss!=se)
+    	    // lazy[2*si][i]+=tmp,lazy[2*si+1][i]+=tmp;
+    	// }
+    // }
+    
+    if(qe<ss||qs>se) return 0;
+    if(qe>=se&&qs<=ss) return st[si][pos];
+    
+    ll md=(ss+se)/2;
+    
+    ll l=query(2*si,ss,md,qs,qe ,pos);
+    ll r=query(2*si+1,md+1,se,qs,qe ,pos);
+    return l+r;
+}
+
+
+
+// create updation if required.. messy code:)
+
+// This updation will not add in the way think
+// these are bits, adding val is stupidity
+
+// void update(ll si,ll ss,ll se,ll qs,ll qe,ll val)
+// {
+    // if(lazy[si]!=0)
+    // {
+        // ll tmp=lazy[si];
+        // lazy[si]=0;
+        // st[si]+=(se-ss+1)*tmp;
+//         
+        // if(ss!=se)
+        // lazy[2*si]+=tmp,lazy[2*si+1]+=tmp;
+    // }
+//     
+    // if(qe<ss||qs>se) return;
+    // if(qe>=se&&qs<=ss)
+    // {
+        // ll tmp=(se-ss+1)*val;
+        // st[si]+=tmp;
+//         
+        // if(ss!=se)
+        // lazy[2*si]+=val,lazy[2*si+1]+=val;
+        // return;
+    // }
+//     
+//     
+    // ll md=(ss+se)/2;
+//     
+    // update(2*si,ss,md,qs,qe,val);
+    // update(2*si+1,md+1,se,qs,qe,val);
+//     
+    // st[si]=st[2*si]+st[2*si+1];
+// }
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    cin>>t;while(t--) // horrible
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        // memo(st,0);
+        // memo(lazy,0);
+        f0(i,n*4+5)
+        {
+        	f0(j,MXM)
+        	{
+        		st[i][j]=0;
+        		// lazy[i][j]=0;
+        	}
+        }
+        
+        f1(i,n)
+        {
+        	cin>>A[i];
+        	
+        	f0(j,MXM)////
+        	{
+        		if(A[i]&(1LL<<j)) a[i][j]=1;
+        		else a[i][j]=0;
+        	}
+        	
+        }
+        
+        build(1,1,n);//not necessary since initial is '0':)
+        
+        
+        cout<<query(1,1,n,1,5 ,1);
+        
+        // https://codeforces.com/problemset/problem/1466/E
+	// MLE n=5*10^5,A[i]=2^60
+	// even after converting a[i][j]=boolean and st[i][j]=int
+        
+        
+    }
+	return 0;
+}

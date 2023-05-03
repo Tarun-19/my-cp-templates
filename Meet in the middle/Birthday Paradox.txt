@@ -1,0 +1,13 @@
+You're given a sequence n≤106,0≤ai<M=109.
+Find 2 subsequences with equal sums modulo M.
+The 2 subsequences can have common elements.
+
+Soln:
+Just take 1st 20-30 elements, and decide accordingly
+..?lol
+Acc to Errichto
+
+
+
+// https://www.geeksforgeeks.org/birthday-paradox/
+

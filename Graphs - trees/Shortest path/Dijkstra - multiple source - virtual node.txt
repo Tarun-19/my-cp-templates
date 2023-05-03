@@ -1,0 +1,122 @@
+// Problem: D. Buy a Ticket
+// Contest: Codeforces - Educational Codeforces Round 38 (Rated for Div. 2)
+// URL: https://codeforces.com/contest/938/problem/D
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;
+const ll MAX=2e5+10;
+
+vector<pair<ll,ll>>adj[MAX];
+ll dist[MAX];// set to zero:)
+ll val[MAX];
+
+void dijkstra_algorithm(ll source)// (n+m)*log(n)
+{
+    ll cur,cur_dis,i;
+    priority_queue <pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
+    
+    dist[source]=0;
+    pq.push({0,source});
+    
+    while(!pq.empty())
+    {
+        cur=pq.top().ss;
+        cur_dis=pq.top().ff;
+        pq.pop();
+        
+        for(auto it:adj[cur])
+        {
+            if(cur_dis+it.ss<dist[it.ff])
+            {
+                dist[it.ff]=cur_dis+it.ss;
+                pq.push({dist[it.ff],it.ff});
+            }
+        }
+    }
+    
+    // f1(i,5) cout<<dist[i]<<" ";cout<<ln;// make n global if possible:)
+    
+}
+
+int main()
+{FAST;ll t,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    t=1;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m;
+        
+        f0(i,n+5)
+        {
+            dist[i]=1e18;
+            adj[i].clear();
+        }
+        
+        f0(i,m)
+        {
+            cin>>l>>r>>x;// l->r (wt)
+            adj[l].pb({r,x+x});
+            adj[r].pb({l,x+x});// undirected
+        }
+        
+        
+        val[0]=0;
+        f1(i,n)
+        {
+        	cin>>val[i];
+        	adj[0].pb({i,val[i]}); // virtual
+        }
+        
+        
+        
+        ll source,target;
+        // cin>>source>>target;
+        
+        source=0; // virtual
+        
+        dijkstra_algorithm(source);
+        
+        f1(i,n)
+        {
+        	target=i;
+        	cout<<dist[target]<<" ";
+        }
+        
+        // ans=dist[target];
+        // if(ans==1e18) cout<<"NO"<<ln;
+        // else cout<<ans<<ln;
+    }
+	return 0;
+}
+// When the going gets tough,
+// only the tough gets going!!

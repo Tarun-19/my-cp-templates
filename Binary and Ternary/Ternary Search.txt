@@ -1,0 +1,115 @@
+// Problem: D. Devu and his Brother
+// Contest: Codeforces - Codeforces Round #251 (Div. 2)
+// URL: https://codeforces.com/problemset/problem/439/D
+// Memory Limit: 256 MB
+// Time Limit: 1000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+// “Time has a wonderful way of showing us what really matters” – Margaret Peters.
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+ll a[100090],b[100090];
+ll n,m;
+
+ll awesome(ll x)
+{
+	ll i,j,k,ans=0;
+	
+	f1(i,n)
+	{
+		if(a[i]<x) ans+=abs(x-a[i]);
+	}
+	
+	f1(i,m)
+	{
+		if(b[i]>x) ans+=abs(x-b[i]);
+	}
+	
+	return ans;
+}
+
+int main()
+{FAST;ll t=1,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n>>m;
+        
+        f1(i,n) cin>>a[i];
+        f1(i,m) cin>>b[i];
+        
+        
+        // using parabola properties
+        // with ternary
+        
+        ll low=1;
+        ll high=1e9;
+        
+        ans=1e18;
+        ll moves=0;
+        while(low<=high and moves<100)
+        {
+        	p=(high-low)/3;
+        	
+        	ll md1=low+p;
+        	// ll md2=low+p+p;
+        	ll md2=high-p;
+        	
+        	l=awesome(md1);
+        	r=awesome(md2);
+        	
+        	ans=min(ans,l);
+        	ans=min(ans,r);
+        	
+        	if(l<r)
+        	{
+        		// ans=l; // no X
+        		high=md2;// right mid
+        	}
+        	else
+        	{
+        		// ans=r; // no X
+        		low=md1;// left mid
+        	}
+        	
+        	moves++;
+        }
+        
+        
+        cout<<ans<<ln;
+    }
+	return 0;
+}
+// Remember.. everthing's gonna be alright

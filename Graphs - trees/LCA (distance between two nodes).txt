@@ -1,0 +1,187 @@
+// Problem: Distance Queries
+// Contest: CSES - CSES Problem Set
+// URL: https://cses.fi/problemset/task/1135
+// Memory Limit: 512 MB
+// Time Limit: 1000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+
+const ll mxm=2e5+565;
+const ll MX=21;// decrease this
+// 2^17 = 131072
+// 2^18 = 262144
+
+vll adj[mxm];
+ll depth[mxm];
+ll dp[mxm][MX+1];
+
+
+void dfs(ll n,ll d,ll p)
+{
+	depth[n]=d;
+	dp[n][0]=p;
+	
+	for(auto it:adj[n])
+	{
+		if(it==p)
+		{
+			continue;
+		}
+		else
+		{
+			dfs(it,1+d,n);
+		}
+	}
+}
+
+
+void precompute(ll n)
+{
+	ll i,j;
+	
+	dfs(1,0,-1);
+	
+	f1(i,MX)
+	{
+		f1(j,n)
+		{
+			if(dp[j][i-1]==-1)
+			{
+				continue;
+			}
+			else
+			{
+				dp[j][i]=dp[dp[j][i-1]][i-1];
+			}
+		}
+	}
+}
+
+
+ll query_lca(ll a,ll b)
+{
+	if(depth[b]<depth[a])
+	{
+		swap(a,b);
+	}
+	
+	ll dif=depth[b]-depth[a];
+	ll tmp,i;
+	
+	while(dif>=1)
+	{
+		tmp=log2(dif);
+		b=dp[b][tmp];
+		dif=dif-(1<<tmp);
+	}
+	
+	if(a==b)
+	{
+		return b;
+	}
+	
+	f0r(i,MX+1)
+	{
+		if(dp[a][i]==-1)
+		{
+			continue;
+		}
+		if(dp[a][i]==dp[b][i])
+		{
+			continue;
+		}
+		
+		a=dp[a][i];
+		b=dp[b][i];
+	}
+	
+	return dp[a][0];
+}
+
+
+ll query_distance(ll a,ll b)
+{
+	ll tmp=query_lca(a,b);
+	a=depth[a]-depth[tmp];
+	b=depth[b]-depth[tmp];
+	
+	tmp=a+b;
+	return tmp;
+}
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        
+        // prefer int:)
+        
+        cin>>n>>q;
+        
+        // reseting
+        f0(i,n+2)
+        {
+        	f0(j,MX+1)
+        	{
+        		dp[i][j]=-1;
+        	}
+        }
+        
+        f0(i,n-1)
+        {
+        	cin>>l>>r;
+        	adj[l].pb(r);
+        	adj[r].pb(l);
+        }
+        
+        precompute(n);
+        
+        
+        while(q--)
+        {
+        	cin>>l>>r;
+        	
+        	ans=query_distance(l,r);
+        	
+        	cout<<ans<<ln;
+        }
+        
+    }
+	return 0;
+}
+// When the going gets tough,
+// only the tough gets going!!

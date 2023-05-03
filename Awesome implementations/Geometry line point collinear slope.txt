@@ -1,0 +1,196 @@
+// Problem: D. Pair Of Lines
+// Contest: Codeforces - Educational Codeforces Round 41 (Rated for Div. 2)
+// URL: https://codeforces.com/contest/961/problem/D
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+// Author:      Tarun Kumar
+// Institution: IET Lucknow
+
+#include <bits/stdc++.h>
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define ll long long int
+#define ld long double
+#define vll vector<ll>
+#define vvll vector<vector<ll>>
+#define vpll vector<pair<ll,ll>>
+#define prqueue priority_queue<ll,vector<ll>,greater<ll>>// top=small
+#define pb push_back
+#define pf push_front
+#define ppb pop_back
+#define ppf pop_front
+#define ff first
+#define ss second
+#define all(v) v.begin(), v.end()
+#define f0(i,n) for(i=0;i<n;i++)
+#define f1(i,n) for(i=1;i<=n;i++)
+#define fab(i,a,b) for(i=a;i<=b;i++)
+#define f0r(i,n) for(i=n-1;i>=0;i--)
+#define f1r(i,n) for(i=n;i>=1;i--)
+#define fabr(i,a,b) for(i=b;i>=a;i--)
+#define memo(a,b) memset(a,b,sizeof(a))
+#define display(x) {for(auto dsp:x)cout<<dsp<<" ";cout<<"\n";}
+#define hi cout<<"hi\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define ln "\n"
+using namespace std;
+const ld pi=acos(-1);const ll mod=1e9+7;bool debug=false;
+const ld inf=1e10;
+
+struct node{
+	ll x,y;
+};
+
+bool comp(node x,node y)
+{
+	if(x.x!=y.x)
+	return x.x<=y.x;
+	return x.y<=y.y;
+}
+
+
+bool same(ld p,ld q)
+{
+	if(abs(p-q)<=1e-10)
+	return true;
+	return false;
+}
+
+
+bool ck(ld m,ld c,node p)
+{
+	ld t1,t2;
+	t1=p.y;
+	t2=m*p.x+c;
+	
+	return same(t1,t1);
+}
+
+
+bool present(pair<ld,ld> pr,node p)
+{
+	if(pr.ff==inf)
+	{
+		return same(pr.ss,p.x);
+	}
+	ld r=pr.ff*p.x+pr.ss;
+	return same(p.y,r);
+}
+
+
+
+
+// m,c
+pair<ld,ld> line(node p1,node p2)
+{
+	pair<ld,ld> pr;
+	
+	if(p2.x-p1.x==0)
+	{
+		pr.ff=inf;
+		pr.ss=p1.x;
+	}
+	else
+	{
+		pr.ff=(p2.y-p1.y)/(ld)(p2.x-p1.x);
+		pr.ss=(ld)p1.y-pr.ff*(ld)p1.x;
+	}
+	
+	return pr;
+}
+
+vector<node> awww(pair<ld,ld> &pr,vector<node> &v)
+{
+	vector<node> rem;
+	
+	
+	for(auto &it:v)
+	{
+		if(present(pr,it)==false)
+		rem.pb(it);
+	}
+	
+	return rem;
+}
+
+
+
+bool collinear(vector<node> &v)
+{
+	if(v.size()<=2) return true;
+	
+	pair<ld,ld> pr;
+	
+	
+	pr=line(v[0],v[1]);
+	
+	ll cnt=0;
+	for(auto it:v)
+	{
+		if(present(pr,it)==false) cnt++;
+	}
+	
+	return cnt==0;
+}
+
+
+int main()
+{FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
+    string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;
+    // cin>>t;while(t--)
+    {
+        f=0;sum=0;flag=0;ans=0;cnt=0;v.clear();mappu.clear();vec.clear();
+        cin>>n;
+        
+        vector<node> a(n),tp1,tp2;
+        
+        f0(i,n)
+        {
+        	cin>>a[i].x>>a[i].y;
+        }
+        
+        if(n<=3)
+        {
+        	yes;
+        	return 0;
+        }
+        
+        // sort(all(a),comp);// no use i think
+        
+        pair<ld,ld> pr;
+        
+        pr=line(a[0],a[1]);
+        tp1=awww(pr,a);
+        if(collinear(tp1))
+        {
+        	yes;
+        	return 0;
+        }
+        
+        pr=line(a[0],a[2]);
+        tp1=awww(pr,a);
+        if(collinear(tp1))
+        {
+        	yes;
+        	return 0;
+        }
+        
+        
+        pr=line(a[1],a[2]);
+        tp1=awww(pr,a);
+        if(collinear(tp1))
+        {
+        	yes;
+        	return 0;
+        }
+        
+        
+        no;
+        
+        // cout<<ans<<ln;
+    }
+	return 0;
+}
+// Hope is the last thing ever lost

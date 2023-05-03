@@ -1,0 +1,3 @@
+int fib(int n) {
+        return round((pow(1.6180339, n)-pow(-1.6180339, -n))/2.23606797);
+    }

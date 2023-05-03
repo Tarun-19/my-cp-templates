@@ -1,0 +1,11 @@
+tc = tonumber(io.read())
+for i=1,tc
+do
+    str=io.read()
+    -- str=string.lower(str)
+    if str == string.reverse(str) then
+    	print("It is a palindrome");
+    else
+    	print("It is not a palindrome");
+end
+end
