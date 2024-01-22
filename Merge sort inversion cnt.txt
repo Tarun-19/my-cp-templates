@@ -29,7 +29,7 @@ void merge(ll a[],ll l,ll md,ll r)
         {
             tmp[k++]=a[j];
             j++;
-            cnt+=(md-i+1);
+            cnt+=(md-i+1); // bcz all remaining elements of left partition will be greater, hence +1 for each
         }
     }
     
