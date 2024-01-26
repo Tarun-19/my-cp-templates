@@ -17,18 +17,18 @@ private:
 
 public:
 	Linkedlist() {
-        head = NULL;
+		head = NULL;
 	}
-	
+
 	void display() {
-        Node* temp = head;
-    	while (temp) {
-            cout << temp->data << " ";
-            temp = temp->next;
-        }
-    }
-    
-    void insertNode(int);
+		Node* temp = head;
+		while (temp) {
+			cout << temp->data << " ";
+			temp = temp->next;
+		}
+	}
+
+        void insertNode(int);
 };
 
 void Linkedlist::insertNode(int data)
