@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node {
+public:
+	int data;
+	Node* next;
+	
+	Node(int data) {
+		this->data = data;
+		this->next = NULL;
+	}
+};
+
+class Linkedlist {
+private:
+	Node* head;
+
+public:
+	Linkedlist() {
+	    head = NULL;
+	}
+	
+	void display() {
+	    Node* temp = head;
+    	while (temp) {
+		    cout << temp->data << " ";
+		    temp = temp->next;
+	    }
+    }
+    
+    void insertNode(int);
+};
+
+void Linkedlist::insertNode(int data)
+{
+	Node* newNode = new Node(data);
+	if (!head) {
+		head = newNode;
+		return;
+	}
+	Node* temp = head;
+	while (temp->next) {
+		temp = temp->next;
+	}
+	temp->next = newNode;
+}
+
+int main()
+{
+	Linkedlist list;
+
+	list.insertNode(1);
+	list.insertNode(2);
+	list.insertNode(3);
+	list.display();
+	return 0;
+}
