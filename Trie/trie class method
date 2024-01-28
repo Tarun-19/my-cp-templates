@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+public:
+    bool isEnding;
+    Node* child[26];
+    Node() {
+        isEnding = false;
+        for(int i = 0; i < 26; i++) child[i] = NULL;
+    }
+    bool isTerminal() {
+        return isEnding;
+    }
+};
+
+class Trie {
+private:
+    Node* root;
+public:
+    Trie() {
+        root = new Node(); // IMP keep root = NULL
+    }
+    
+    void insert(string word) {
+        Node* tmp = root;
+        for(int i = 0; i < word.size(); i++) {
+            int pos = word[i] - 'a';
+
+            if(tmp->child[pos] == NULL) {
+                tmp->child[pos] = new Node();
+            }
+            tmp = tmp->child[pos];
+        }
+        tmp->isEnding = true;
+    }
+    
+    bool search(string word) {
+        Node* tmp = root;
+        for(int i = 0; i < word.size(); i++) {
+            int pos = word[i] - 'a';
+
+            if(tmp->child[pos] == NULL) return false;
+            tmp = tmp->child[pos];
+        }
+
+        return tmp->isTerminal();
+        // return tmp->isEnding;
+    }
+    
+    bool startsWith(string prefix) {
+        Node* tmp = root;
+        for(int i = 0; i < prefix.size(); i++) {
+            int pos = prefix[i] - 'a';
+
+            if(tmp->child[pos] == NULL) return false;
+            tmp = tmp->child[pos];
+        }
+        return true;
+    }
+};
+
+int main()
+{
+    Trie* obj = new Trie();
+    obj->insert("apple");
+    cout<<obj->search("apple")<<endl;
+    cout<<obj->startsWith("app")<<endl;
+    cout<<obj->search("app")<<endl;
+    
+    Trie* obj2 = new Trie();
+    obj2->insert("appl");
+    cout<<obj2->search("apple")<<endl;
+    cout<<obj2->startsWith("app")<<endl;
+    cout<<obj2->search("app")<<endl;
+}
+// It's gonna be legendary!!
+// Wait for it ~Barney
