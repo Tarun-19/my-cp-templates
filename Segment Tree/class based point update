@@ -1,0 +1,49 @@
+// https://atcoder.jp/contests/abc339/tasks/abc339_e
+#include <bits/stdc++.h>
+using namespace std;
+
+class SegmentTree {
+    private:
+        int n;
+        vector<int> tree;
+    public:
+        SegmentTree(int n) {
+            tree.resize(4*n + 1, 0);
+        }
+        
+        int query(int si, int ss, int se, int qs, int qe) {
+            if(ss > qe or se < qs) return INT_MIN;
+            if(ss >= qs and se <= qe) return tree[si];
+            int md = (ss + se)/2;
+            return max(query(si*2, ss, md, qs, qe), query(si*2+1, md+1, se, qs, qe));
+        }
+        
+        void update(int si, int ss, int se, int idx, int val) {
+            if(ss == se) {
+                tree[si] = val;
+                return;
+            }
+            int md = (ss + se)/2;
+            if(idx > md) update(si*2+1, md+1, se, idx, val);
+            else update(si*2, ss, md, idx, val);
+            tree[si] = max(tree[si*2], tree[si*2+1]);
+        }
+};
+
+int main() {
+    int n, d, cur, l, r, mx, ans = 0;
+    cin >> n >> d;
+    
+    SegmentTree sTree(500000);
+    for(int i = 0; i < n; i++) {
+        cin >> cur;
+        
+        l = max(0, cur - d);
+        r = min(500000, cur + d);
+        mx = sTree.query(1, 1, 500000, l, r);
+        ans = max(ans, mx+1);
+        sTree.update(1, 1, 500000, cur, mx+1);
+    }
+    cout << ans;
+	return 0;
+}
