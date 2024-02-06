@@ -50,6 +50,10 @@ void dijkstra_algorithm(ll source)// (n+m)*log(n)
         cur=pq.top().ss;
         cur_dis=pq.top().ff;
         pq.pop();
+
+	if(cur_dis > dist[cur]) continue;
+
+	// if(cur == destination), then return from here. But don't do it inside for loop:)
         
         for(auto it:adj[cur])
         {
