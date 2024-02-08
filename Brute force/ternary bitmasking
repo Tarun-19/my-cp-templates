@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+
+int main()
+{
+    ll N, ans = 0;
+    cin>>N;
+    ll A[N];
+    for (int i = 0; i < N; i++) cin >> A[i];
+    
+    ll x = pow(3, N);
+    for (int i = 0; i < x; i++) {
+        ll cur = i;
+        ll s1 = 0, s2 = 0;
+
+        for (int j = 0; j < N; j++) {
+            ll p = cur % 3;
+            cur /= 3;
+            
+            if (p == 0) s1 += A[j];
+            else if (p == 1) s2 += A[j];
+        }
+        if(s1 == s2) ans = max(ans, s1);
+    }
+    cout<<ans;
+    return 0;
+}
