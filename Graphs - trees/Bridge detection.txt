@@ -51,7 +51,7 @@ void dfs(ll n,ll par)
 	
 	for(auto it:adj[n])
 	{
-		if(it==par)
+		if(it==par) // IMP
 		continue;
 		
 		if(vis[it])
@@ -72,7 +72,7 @@ void dfs(ll n,ll par)
 				cout<<n<<"->"<<it<<" is a bridge:)"<<ln;
 			}
 			
-			low[n]=min(low[n],low[it]);
+			low[n]=min(low[n],low[it]); // IMP low*2
 		}
 	}
 	
