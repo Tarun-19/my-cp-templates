@@ -1,0 +1,87 @@
+/*
+Given a matrix of integers A with R rows and C columns, find the maximum score of a path starting at [0,0] and ending at [R-1,C-1].
+The score of a path is the minimum value in that path.  For example, the value of the path 8 →  4 →  5 →  9 is 4.
+A path moves some number of times from one visited cell to any neighbouring unvisited cell in one of the 4 cardinal directions (north, east, west, south).
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class PathWithMaxMinValue {
+public:
+    PathWithMaxMinValue(const vector<vector<int>> v) {
+        this->v = v;
+    }
+    
+    int solve() {
+        int ans = 0;
+        n = v.size();
+        m = v[0].size();
+        
+        priority_queue<pair<int, pair<int, int>>> pq;
+        vector<vector<int>> val(n, vector<int>(m, -1));
+        
+        pq.push({v[0][0], {0, 0}});
+        val[0][0] = v[0][0];
+        
+        while(!pq.empty()) {
+            int p = pq.top().first;
+            int i = pq.top().second.first;
+            int j = pq.top().second.second;
+            pq.pop();
+            
+            if(i == n-1 and j == m-1) return p;
+            
+            for(int k = 0; k < 4; k++) {
+                int x = i + dx[k];
+                int y = j + dy[k];
+                
+                if(!isValid(x, y)) continue;
+                
+                int tmp = min(p, v[x][y]);
+                if(val[x][y] < tmp) {
+                    val[x][y] = tmp;
+                    pq.push({tmp, {x, y}});
+                }
+            }
+        }
+        return -1;
+    }
+
+private:
+    int n, m;
+    vector<vector<int>> v;
+    const vector<int> dx = {0,0,1,-1};
+    const vector<int> dy = {1,-1,0,0};
+    
+    bool isValid(int x, int y) {
+        return x >= 0 and y >= 0 and x < n and y < m;
+    }
+};
+
+
+int main() {
+    vector<vector<int>> v = {
+        {5,4,5},
+        {1,2,6},
+        {7,4,6}
+    }; // ans = 4
+    
+    v = {
+        {2,2,1,2,2,2},
+        {1,2,2,2,1,2}
+    }; // ans = 2
+    
+    v = {
+        {3,4,6,3,4},
+        {0,2,1,1,7},
+        {8,8,3,2,7},
+        {3,2,4,9,8},
+        {4,1,2,0,0},
+        {4,6,5,4,3}
+    }; // ans = 3
+
+    PathWithMaxMinValue obj(v);
+    cout << obj.solve() << '\n';
+    return 0;
+}
