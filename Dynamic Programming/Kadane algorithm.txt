@@ -56,6 +56,35 @@ ll kadane(ll a[],ll n)
 	}
 	return ans;
 }
+
+// https://leetcode.com/problems/maximum-subarray/description/
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {// this is how 'Kadane' was formed
+
+        // set<int> st;
+        int st=0;
+        // st.insert(0);
+        
+        int sum=0;
+        int ans=nums[0];
+        for(auto it:nums)
+        {
+            sum+=it;
+            // int x=*st.begin();
+            int x=st;
+            ans=max(ans,sum-x);
+            
+            // st.insert(sum);
+            st=min(st,sum);
+        }
+        // ans=max(ans,sum);
+        
+        return ans;
+    }
+};
+
+
 int main()
 {FAST;ll t=1,n,i,j,k,len,x,y,z,c,f,flag,p,q,mx,mn,l,r,sum,ans,tmp,it,pos,avg,m,cnt;
     string s;char ch;vll v;vpll vec;unordered_map<ll,ll> mappu;pair<ll,ll> pr;
